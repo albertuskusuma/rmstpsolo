@@ -1,0 +1,5 @@
+@baseUrl = http://localhost:3000/api
+
+### getPasiensBySearch
+GET {{baseUrl}}/pasien/getPasiensBySearch?search=q222
+Content-Type: application/json

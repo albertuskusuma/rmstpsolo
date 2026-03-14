@@ -2,6 +2,7 @@ import express from "express"
 import cors from "cors"
 import { pool } from "./config/db"
 import pasienRoute from "./routes/pasienRoute"
+import transPemeriksaanRoute from "./routes/transPemeriksaanRoute"
 
 const app = express()
 
@@ -22,6 +23,9 @@ app.get("/", (req,res) => {
 
 // pasien
 app.use("/api/pasien", pasienRoute)
+
+// trans pemeriksaan
+app.use("/api/transperiksa", transPemeriksaanRoute)
 
 app.listen(3000, () => {
     console.log("Server running on port 3000")

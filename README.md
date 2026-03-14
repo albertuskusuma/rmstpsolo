@@ -44,3 +44,6 @@ proses generated no rm "RM"+id_pasien+tanggalsekarang
 
 # Step 4 : generated kode reg, perbaikan checking generated no rm
 proses generated kode reg "P"+id_tx_periksa+1, perbaikan checking generated no rm
+
+# Step 5 : Tambahkan Permintaan Pemeriksaan
+proses input pemeriksaan di tx_pemeriksaan sbg header

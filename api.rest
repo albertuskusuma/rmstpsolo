@@ -11,3 +11,15 @@ Content-Type: application/json
 ### getKodeReg
 GET {{baseUrl}}/pasien/getKodeReg
 Content-Type: application/json
+
+### addTransPemeriksaanHeader
+POST {{baseUrl}}/transperiksa/addTransPemeriksaanHeader
+Content-Type: application/json
+
+{
+    "kode_reg":"P1",
+    "id_pasien":1,
+    "tanggal_periksa":"2026-03-14",
+    "is_active":1,
+    "id_analis_pemeriksa":1
+}

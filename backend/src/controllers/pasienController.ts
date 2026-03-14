@@ -31,3 +31,20 @@ export const getPasiensBySearch = async (req: Request, res: Response) => {
     }
 
 }
+
+export const getNoRm=async(req: Request, res: Response) => {
+    try {
+        const data = await pasienService.getNoRm()
+
+        return res.json({
+            status:"OK",
+            data:data,
+            message:"No RM sudah dapat"
+        });
+    } catch (error) {
+        res.status(500).json({
+            status:"Err",
+            message:"gagal get data no rm"
+        });
+    }
+}

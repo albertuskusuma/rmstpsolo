@@ -62,3 +62,27 @@ export const getPasiens = async (search: string): Promise<PasienModel[]> => {
         throw error
     }
 }
+
+export const getNoRm = async ():Promise<string> => {
+    let no_rm = ""
+
+    try {
+        let querygetLastID = `SELECT id_pasien 
+        FROM pasien
+        ORDER BY id_pasien DESC
+        LIMIT 1 OFFSET 0`;
+
+        const resultID = await pool.query(querygetLastID);
+        let lastId = Number(resultID.rows[0]['id_pasien']) + 1
+
+        let queryDateNow = `SELECT TO_CHAR(DATE(NOW()),'DDMMYYYY') as datenow`;
+        const resultDateNow = await pool.query(queryDateNow)
+        let dateNow = resultDateNow.rows[0]['datenow']
+
+        no_rm += "RM"+no_rm+lastId+dateNow
+        return no_rm
+    } catch (error) {
+        throw error
+    }
+    return no_rm;
+}

@@ -3,3 +3,7 @@
 ### getPasiensBySearch
 GET {{baseUrl}}/pasien/getPasiensBySearch?search=q222
 Content-Type: application/json
+
+### getNoRm
+GET {{baseUrl}}/pasien/getNoRm
+Content-Type: application/json

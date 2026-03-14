@@ -1,6 +1,10 @@
 import { Router } from "express";
-import { getPasiensBySearch } from "../controllers/pasienController"
+import { 
+    getPasiensBySearch, 
+    getNoRm 
+} from "../controllers/pasienController"
 
 const router = Router()
 router.get("/getPasiensBySearch", getPasiensBySearch)
+router.get("/getNoRm", getNoRm)
 export default router

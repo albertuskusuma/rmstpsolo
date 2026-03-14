@@ -38,3 +38,6 @@ npm install pg
 npm install -D @types/pg
 
 buat proses get data pasien by search
+
+# Step 3 : generated no rm
+proses generated no rm id_pasien+tanggalsekarang

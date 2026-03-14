@@ -27,6 +27,15 @@ export interface addPemeriksaanObj {
     id_analis_pemeriksa: number,
 }
 
+export interface addHasilPemeriksaanObj {
+    id_tx_pemeriksaan: number,
+    id_sub_periksa: number,
+    hasil: string,
+    nilai_normal: string,
+    harga: number,
+    is_active: number
+}
+
 export const addTransPemeriksaanHeader=async(addPemeriksaanObj: addPemeriksaanObj)=>{
     try {
         let queryAdd = `INSERT INTO tx_pemeriksaan(
@@ -51,5 +60,46 @@ export const addTransPemeriksaanHeader=async(addPemeriksaanObj: addPemeriksaanOb
         return resultAdd;
     } catch (error:any) {
         throw error;
+    }
+}
+
+export const addHasilPemeriksaanDetail=async(addHasilPemeriksaanObj: addHasilPemeriksaanObj[]) => {
+    try {
+        if(addHasilPemeriksaanObj.length > 0){
+            const resultPush = []
+            for (let x of addHasilPemeriksaanObj) {
+
+                let queryAddDetail = `INSERT INTO tx_detail_pemeriksaan(
+                    id_tx_pemeriksaan,
+                    id_sub_periksa,
+                    hasil,
+                    nilai_normal,
+                    harga,
+                    is_active
+                ) VALUES (
+                    $1,
+                    $2,
+                    $3,
+                    $4,
+                    $5,
+                    1
+                ) RETURNING *`
+
+                const resultAdd = pool.query(queryAddDetail,[
+                    x.id_tx_pemeriksaan,
+                    x.id_sub_periksa,
+                    x.hasil,
+                    x.nilai_normal,
+                    x.harga
+                ])
+
+                resultPush.push(resultAdd)
+            }
+
+            return resultPush
+        }
+       
+    } catch (error) {
+        throw error
     }
 }

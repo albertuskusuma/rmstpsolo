@@ -23,3 +23,26 @@ Content-Type: application/json
     "is_active":1,
     "id_analis_pemeriksa":1
 }
+
+### addTransPemeriksaanDetail
+POST {{baseUrl}}/transperiksa/addTransPemeriksaanDetail
+Content-Type: application/json
+
+[
+    {
+        "id_tx_pemeriksaan":1,
+        "id_sub_periksa":1,
+        "hasil":"Non Reaktif",
+        "nilai_normal":"Non Reaktif",
+        "harga":70000,
+        "is_active":1
+    },
+    {
+        "id_tx_pemeriksaan":1,
+        "id_sub_periksa":2,
+        "hasil":"13,0",
+        "nilai_normal":"P: 12,0 - 14,0 g/dl L 13,0 - 16,0 g/dl",
+        "harga":100000,
+        "is_active":1
+    }
+]

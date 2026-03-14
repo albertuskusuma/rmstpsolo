@@ -47,3 +47,6 @@ proses generated kode reg "P"+id_tx_periksa+1, perbaikan checking generated no r
 
 # Step 5 : Tambahkan Permintaan Pemeriksaan
 proses input pemeriksaan di tx_pemeriksaan sbg header
+
+# Step 6 : Tambahkan Hasil Pemeriksaan
+proses input hasil pemeriksaan di tx_detail_pemeriksaan berdasarkan id_tx_pemeriksaan

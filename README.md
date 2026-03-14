@@ -40,4 +40,7 @@ npm install -D @types/pg
 buat proses get data pasien by search
 
 # Step 3 : generated no rm
-proses generated no rm id_pasien+tanggalsekarang
+proses generated no rm "RM"+id_pasien+tanggalsekarang
+
+# Step 4 : generated kode reg, perbaikan checking generated no rm
+proses generated kode reg "P"+id_tx_periksa+1, perbaikan checking generated no rm

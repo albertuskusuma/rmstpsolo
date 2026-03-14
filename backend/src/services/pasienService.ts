@@ -7,3 +7,7 @@ export const getPasiens = async (search: string) => {
 export const getNoRm = async() =>{
     return await pasienModel.getNoRm()
 }
+
+export const getKodeReg = async() =>{
+    return await pasienModel.getKodeReg()
+}

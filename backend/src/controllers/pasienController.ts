@@ -48,3 +48,20 @@ export const getNoRm=async(req: Request, res: Response) => {
         });
     }
 }
+
+export const getKodeReg= async(req: Request, res: Response) =>{
+    try {
+        const data = await pasienService.getKodeReg()
+
+        res.json({
+            status:"OK",
+            data:data,
+            message:"Kode Reg sudah dapat"
+        });
+    } catch (error) {
+        res.status(500).json({
+            status:"Err",
+            message:"gagal get kode reg"
+        });
+    }
+}

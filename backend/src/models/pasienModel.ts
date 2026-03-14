@@ -63,7 +63,7 @@ export const getPasiens = async (search: string): Promise<PasienModel[]> => {
     }
 }
 
-export const getNoRm = async ():Promise<string> => {
+export const getNoRm = async (): Promise<string> => {
     let no_rm = ""
 
     try {
@@ -72,17 +72,44 @@ export const getNoRm = async ():Promise<string> => {
         ORDER BY id_pasien DESC
         LIMIT 1 OFFSET 0`;
 
+        let lastId = 1
         const resultID = await pool.query(querygetLastID);
-        let lastId = Number(resultID.rows[0]['id_pasien']) + 1
-
+        if(resultID.rows.length > 0){
+            lastId = Number(resultID.rows[0]['id_pasien']) + 1
+        }
+        
         let queryDateNow = `SELECT TO_CHAR(DATE(NOW()),'DDMMYYYY') as datenow`;
         const resultDateNow = await pool.query(queryDateNow)
         let dateNow = resultDateNow.rows[0]['datenow']
 
-        no_rm += "RM"+no_rm+lastId+dateNow
+        no_rm += "RM" + no_rm + lastId + dateNow
         return no_rm
     } catch (error) {
         throw error
     }
-    return no_rm;
+}
+
+export const getKodeReg = async (): Promise<string> => {
+    try {
+        let kode_reg = "";
+
+        let queryKodeRegLast = `SELECT id_tx_pemeriksaan
+        FROM tx_pemeriksaan
+        ORDER BY id_tx_pemeriksaan DESC
+        LIMIT 1 OFFSET 0
+        `
+
+        // console.log(queryKodeRegLast)
+        let kodeRegLast = 1
+        const resultKodeRegLast = await pool.query(queryKodeRegLast)
+        if(resultKodeRegLast.rows.length > 0){
+            kodeRegLast = Number(resultKodeRegLast.rows[0]['id_tx_pemeriksaan']) + 1
+        }
+       
+        kode_reg += "P"+kodeRegLast
+
+        return kode_reg;
+    } catch (error: any) {
+        throw error
+    }
 }

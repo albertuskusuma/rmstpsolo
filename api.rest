@@ -7,3 +7,7 @@ Content-Type: application/json
 ### getNoRm
 GET {{baseUrl}}/pasien/getNoRm
 Content-Type: application/json
+
+### getKodeReg
+GET {{baseUrl}}/pasien/getKodeReg
+Content-Type: application/json

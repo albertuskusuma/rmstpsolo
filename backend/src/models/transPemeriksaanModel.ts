@@ -36,7 +36,7 @@ export interface addHasilPemeriksaanObj {
     is_active: number
 }
 
-export const addTransPemeriksaanHeader=async(addPemeriksaanObj: addPemeriksaanObj)=>{
+export const addTransPemeriksaanHeader = async (addPemeriksaanObj: addPemeriksaanObj) => {
     try {
         let queryAdd = `INSERT INTO tx_pemeriksaan(
             kode_reg, 
@@ -58,14 +58,14 @@ export const addTransPemeriksaanHeader=async(addPemeriksaanObj: addPemeriksaanOb
             addPemeriksaanObj.id_analis_pemeriksa,
         ])
         return resultAdd;
-    } catch (error:any) {
+    } catch (error: any) {
         throw error;
     }
 }
 
-export const addHasilPemeriksaanDetail=async(addHasilPemeriksaanObj: addHasilPemeriksaanObj[]) => {
+export const addHasilPemeriksaanDetail = async (addHasilPemeriksaanObj: addHasilPemeriksaanObj[]) => {
     try {
-        if(addHasilPemeriksaanObj.length > 0){
+        if (addHasilPemeriksaanObj.length > 0) {
             const resultPush = []
             for (let x of addHasilPemeriksaanObj) {
 
@@ -85,7 +85,7 @@ export const addHasilPemeriksaanDetail=async(addHasilPemeriksaanObj: addHasilPem
                     1
                 ) RETURNING *`
 
-                const resultAdd = pool.query(queryAddDetail,[
+                const resultAdd = pool.query(queryAddDetail, [
                     x.id_tx_pemeriksaan,
                     x.id_sub_periksa,
                     x.hasil,
@@ -98,8 +98,23 @@ export const addHasilPemeriksaanDetail=async(addHasilPemeriksaanObj: addHasilPem
 
             return resultPush
         }
-       
+
     } catch (error) {
         throw error
+    }
+}
+
+export const hapusHasilPemeriksaanDetail = async (id_tx_detail_pemeriksaan: number) => {
+    try {
+        let queryHapus = `UPDATE tx_detail_pemeriksaan SET is_active = 0
+        WHERE id_tx_detail_pemeriksaan = $1`
+
+        const resultHapus = await pool.query(queryHapus, [
+            id_tx_detail_pemeriksaan
+        ])
+
+        return resultHapus;
+    } catch (error: any) {
+        throw error;
     }
 }

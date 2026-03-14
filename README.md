@@ -50,3 +50,7 @@ proses input pemeriksaan di tx_pemeriksaan sbg header
 
 # Step 6 : Tambahkan Hasil Pemeriksaan
 proses input hasil pemeriksaan di tx_detail_pemeriksaan berdasarkan id_tx_pemeriksaan
+
+# Step 7 : Hapus Hasil Pemeriksaan
+proses update is_active = 0 di tx_detail_pemeriksaan berdasarkan
+id_detail_pemeriksaan

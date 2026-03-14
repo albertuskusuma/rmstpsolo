@@ -69,3 +69,29 @@ export const addTransPemeriksaanDetail = async (req: Request, res: Response) => 
         throw error
     }
 }
+
+export const hapusHasilPemeriksaanDetail = async(req: Request, res: Response) => {
+    try {
+        if(!req.body || Object.keys(req.body).length == 0){
+            return res.status(500).json({
+                status:"Err",
+                message:"Silahkan Pilih Hasil Pemeriksaan untuk dihapus"
+            })
+        }
+
+        const param = req.body;
+        const data = await transPemeriksaanService.hapusHasilPemeriksaanDetail(Number(param.id_tx_detail_pemeriksaan))
+
+        return res.json({
+            status:"OK",
+            data:data,
+            message:"Berhasil Hapus Hasil Pemeriksaan"
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            status:"Err",
+            message:"Gagal hapus detail"
+        })
+    }
+}

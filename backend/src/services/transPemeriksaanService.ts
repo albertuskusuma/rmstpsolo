@@ -14,3 +14,7 @@ export const addHasilPemeriksaanDetail = async (addHasilPemeriksaanDetailObj: tr
     }
     return await transPemeriksaanModel.addHasilPemeriksaanDetail(addHasilPemeriksaanDetailObj)
 }
+
+export const hapusHasilPemeriksaanDetail = async (id_tx_detail_pemeriksaan: number) =>{
+    return await transPemeriksaanModel.hapusHasilPemeriksaanDetail(id_tx_detail_pemeriksaan)
+}

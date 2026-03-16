@@ -109,3 +109,6 @@ test komponen
 <a href="#" className="font-bold text-white bg-orange-400 rounded-full px-5 py-3">
   View Profile
 </a>
+
+# Step 14 : Slicing UI header, footer, sidebar, content untuk halaman dashboard
+proses slicing UI only

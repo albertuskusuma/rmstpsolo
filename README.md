@@ -117,3 +117,7 @@ proses slicing UI only
 npm install react-router-dom
 npm install -D @types/react-router-dom
 atur link untuk login, dashboard, input pemeriksaan
+
+# Step 16 : Slicing component form input text, number, search dropdown array
+slicing all component form : input text, number,
+search dropdown array,

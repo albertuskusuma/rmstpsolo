@@ -1,13 +1,13 @@
 import React from 'react'
-import Mainlayout from '../../layouts/Mainlayout'
+import MainLayout from '../../layouts/MainLayout'
 
 const DashboardPage = () => {
     return (
-        <Mainlayout>
+        <MainLayout>
             <div>
                 <h2 className='text-2xl font-semibold p-6'>Dashboard</h2>
             </div>
-        </Mainlayout>
+        </MainLayout>
     )
 }
 

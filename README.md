@@ -57,3 +57,6 @@ id_detail_pemeriksaan
 
 # Step 8 : Query Print PDF Permintaan Pemeriksaan Laboratorium
 query untuk print PDF permintaan pemeriksaan laboratorium
+
+# Step 9 : Query Hasil Pemeriksaan Laboratorium
+query untuk hasil pemeriksaan laboratorium

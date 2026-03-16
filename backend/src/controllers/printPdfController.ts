@@ -25,3 +25,28 @@ export const getPrintPdfPermintaanPemeriksaanLab = async(req: Request, res: Resp
         })
     }
 }
+
+export const getPrintPdfHasilPemeriksaanLab = async(req: Request, res: Response) => {
+    try {
+        if(!req.body || Object.keys(req.body).length == 0){
+            return res.status(500).json({
+                status:"Err",
+                message:"Kode registrasi belum ada"
+            })
+        }
+        // console.log(req.body)
+        const param = req.body
+        const data = await printPdfService.getPrintPdfHasilPemeriksaanLab(String(param.kode_reg))
+        
+        return res.json({
+            status:"OK",
+            data:data,
+            message:"Print PDF Hasil Lab berhasil"
+        })
+    } catch (error) {
+        return res.status(500).json({
+            status:"Err",
+            message:"Gagal get data pemeriksaan"
+        })
+    }
+}

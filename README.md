@@ -60,3 +60,6 @@ query untuk print PDF permintaan pemeriksaan laboratorium
 
 # Step 9 : Query Hasil Pemeriksaan Laboratorium
 query untuk hasil pemeriksaan laboratorium
+
+# Step 10 : Query Hasil Bayar 
+query untuk hasil Bayar 

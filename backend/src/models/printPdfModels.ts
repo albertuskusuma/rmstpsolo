@@ -34,6 +34,12 @@ export interface printPdfHasilPemeriksaanLab {
     list_hasil:listHasilPemeriksaanModel[]
 }
 
+export interface printPdfBayarLab {
+    header:headerModel,
+    total_harga:number,
+    list_hasil:listHasilPemeriksaanModel[]
+}
+
 export const getPrintPdfPermintaanPemeriksaanLab = async (kode_reg:string): Promise<printPdfPermintaanPemeriksaanLab> =>{
     try {
         // header
@@ -160,6 +166,89 @@ export const getPrintPdfHasilPemeriksaanLab = async (kode_reg:string): Promise<p
         return {
             header:resultHeader.rows[0],
             list_hasil:hasilP.rows
+        };
+    } catch (error:any) {
+        throw error
+    }
+}
+
+export const getPrintPdfBayarLab = async (kode_reg:string): Promise<printPdfBayarLab> =>{
+    try {
+        // header
+        let queryHeader = `SELECT 
+            txp.kode_reg, 
+            p.nama_pasien, 
+            p.dokter_pengirim, 
+            p.gol_darah, 
+            p.status_kawin, 
+            p.pekerjaan, 
+            p.nama_ayah, 
+            p.alamat, 
+            TO_CHAR(txp.tanggal_periksa, 'DD-MM-YYYY') as tanggal_registrasi, 
+            p.kategori_pasien, 
+            p.jenis_kelamin, 
+            TO_CHAR(p.tanggal_lahir, 'DD-MM-YYYY') as tanggal_lahir, 
+            p.no_hp, 
+            p.no_kk, 
+            p.nama_ibu, 
+            u.nama
+        FROM tx_pemeriksaan as txp
+        JOIN pasien as p
+            ON txp.id_pasien = p.id_pasien
+            AND p.is_active = 1
+        JOIN users as u
+            ON txp.id_analis_pemeriksa = u.id_users
+            AND u.is_active = 1
+        WHERE txp.kode_reg = $1
+            AND txp.is_active = 1`;
+
+        const resultHeader = await pool.query(queryHeader, [
+            String(kode_reg)
+            // 'P1'
+        ])
+
+        // hasilP
+        let queryhasilP = `SELECT 
+            b.nama_bidang_periksa,
+            j.nama_pemeriksaan,
+            s.nama_sub_periksa,
+            d.hasil,
+            d.nilai_normal,
+            d.harga
+        FROM tx_pemeriksaan as txp
+
+        JOIN tx_detail_pemeriksaan d
+            ON txp.id_tx_pemeriksaan = d.id_tx_pemeriksaan
+            AND d.is_active = 1
+
+        JOIN sub_pemeriksaan s
+            ON d.id_sub_periksa = s.id_sub_periksa
+            AND s.is_active = 1
+
+        JOIN jenis_pemeriksaan j
+            ON s.id_periksa = j.id_periksa
+            AND j.is_active = 1
+
+        JOIN bidang_periksa b
+            ON j.id_bidang_periksa = b.id_bidang_periksa
+            AND b.is_active = 1
+
+        WHERE txp.kode_reg = $1
+        AND txp.is_active = 1`;
+        const hasilP = await pool.query(queryhasilP,[kode_reg])
+
+        let total_hargax = 0;
+        if(hasilP.rows.length > 0){
+            for (let index = 0; index < hasilP.rows.length; index++) {
+                const e = hasilP.rows[index];
+                total_hargax += Number(e['harga'])
+            }
+        }
+
+        return {
+            header:resultHeader.rows[0],
+            list_hasil:hasilP.rows,
+            total_harga: total_hargax
         };
     } catch (error:any) {
         throw error

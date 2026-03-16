@@ -112,3 +112,8 @@ test komponen
 
 # Step 14 : Slicing UI header, footer, sidebar, content untuk halaman dashboard
 proses slicing UI only
+
+# Step 15 : Add router link untuk page
+npm install react-router-dom
+npm install -D @types/react-router-dom
+atur link untuk login, dashboard, input pemeriksaan

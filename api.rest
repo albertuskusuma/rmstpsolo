@@ -78,3 +78,25 @@ Content-Type: application/json
 {
     "kode_reg":"P1"
 }
+
+### getUserLogin
+POST {{baseUrl}}/login/getUserLogin
+Content-Type: application/json
+
+{
+    "username":"sindhu",
+    "password":"paulus"
+}
+
+### REFRESH TOKEN
+POST {{baseUrl}}/login/refreshToken
+Content-Type: application/json
+Cookie: refreshToken=ISI_REFRESH_TOKEN
+
+### PROFILE
+GET {{baseUrl}}/login/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VycyI6MSwicm9sZV91c2VyIjoic3VwZXJ1c2VyIiwiaWF0IjoxNzczNjQzMzYzLCJleHAiOjE3NzM2NDQyNjN9.7GWzqTmwmFUBTwc9fYPzyOzgPKm7Onl5pAgXZsaUlq0
+
+### LOGOUT
+POST {{baseUrl}}/login/logout
+Cookie: refreshToken=ISI_TOKEN

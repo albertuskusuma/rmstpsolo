@@ -1,9 +1,12 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express"
 import cors from "cors"
 import { pool } from "./config/db"
 import pasienRoute from "./routes/pasienRoute"
 import transPemeriksaanRoute from "./routes/transPemeriksaanRoute"
 import printPdfRoute from "./routes/printPdfRoute"
+import authRoute from "./routes/authRoute"
 
 const app = express()
 
@@ -30,6 +33,9 @@ app.use("/api/transperiksa", transPemeriksaanRoute)
 
 // print pdf
 app.use("/api/printpdf", printPdfRoute)
+
+// login
+app.use("/api/login", authRoute)
 
 app.listen(3000, () => {
     console.log("Server running on port 3000")

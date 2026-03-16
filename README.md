@@ -63,3 +63,16 @@ query untuk hasil pemeriksaan laboratorium
 
 # Step 10 : Query Hasil Bayar 
 query untuk hasil Bayar 
+
+# Step 11 : Login & Logout pakai JWT, setting pake .env
+npm install express cors dotenv bcrypt jsonwebtoken cookie-parser pg
+
+npm install -D typescript ts-node-dev \
+@types/node \
+@types/express \
+@types/cors \
+@types/bcrypt \
+@types/jsonwebtoken \
+@types/cookie-parser
+
+proses login dan logout pakai JWT biasa username dan password

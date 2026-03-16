@@ -17,6 +17,9 @@ function App() {
         </div>
         <div>
           <h1>Get started</h1>
+          {/* <a href="#" className="font-bold text-white bg-orange-400 rounded-full px-5 py-3">
+            View Profile
+          </a> */}
           <p>
             Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
           </p>

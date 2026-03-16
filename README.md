@@ -79,3 +79,33 @@ proses login dan logout pakai JWT biasa username dan password
 
 # Step 12 : Install frontend React Typescript
 npm create vite@latest frontend
+
+# Step 13 : Install Tailwind versi 3.4.17
+npm install
+npm install -D tailwindcss@3
+npx tailwindcss init -p
+npm install -D tailwindcss postcss autoprefixer
+di tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
+di index.css ganti
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+di index.html
+<link href="src/output.css" rel="stylesheet">
+test komponen
+<a href="#" className="font-bold text-white bg-orange-400 rounded-full px-5 py-3">
+  View Profile
+</a>

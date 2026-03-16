@@ -76,3 +76,6 @@ npm install -D typescript ts-node-dev \
 @types/cookie-parser
 
 proses login dan logout pakai JWT biasa username dan password
+
+# Step 12 : Install frontend React Typescript
+npm create vite@latest frontend

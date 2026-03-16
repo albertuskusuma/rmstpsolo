@@ -3,6 +3,7 @@ import cors from "cors"
 import { pool } from "./config/db"
 import pasienRoute from "./routes/pasienRoute"
 import transPemeriksaanRoute from "./routes/transPemeriksaanRoute"
+import printPdfRoute from "./routes/printPdfRoute"
 
 const app = express()
 
@@ -26,6 +27,9 @@ app.use("/api/pasien", pasienRoute)
 
 // trans pemeriksaan
 app.use("/api/transperiksa", transPemeriksaanRoute)
+
+// print pdf
+app.use("/api/printpdf", printPdfRoute)
 
 app.listen(3000, () => {
     console.log("Server running on port 3000")

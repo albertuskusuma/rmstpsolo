@@ -54,3 +54,11 @@ Content-Type: application/json
 {
     "id_tx_detail_pemeriksaan":9
 }
+
+### getPrintPdfPermintaanPemeriksaanLab
+POST {{baseUrl}}/printpdf/getPrintPdfPermintaanPemeriksaanLab
+Content-Type: application/json
+
+{
+    "kode_reg":"P1"
+}

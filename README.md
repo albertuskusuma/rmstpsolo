@@ -54,3 +54,6 @@ proses input hasil pemeriksaan di tx_detail_pemeriksaan berdasarkan id_tx_pemeri
 # Step 7 : Hapus Hasil Pemeriksaan
 proses update is_active = 0 di tx_detail_pemeriksaan berdasarkan
 id_detail_pemeriksaan
+
+# Step 8 : Query Print PDF Permintaan Pemeriksaan Laboratorium
+query untuk print PDF permintaan pemeriksaan laboratorium

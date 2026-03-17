@@ -136,3 +136,6 @@ ubah nama folder datepicker jadi datepickermask
 
 # Step 21 : make own component card, textarea, button, fix bug dropdownsearch and slicing UI add new pasien, add input pemeriksaan
 buat komponen card kosongan, textarea, button, fix bug dropdownsearch dan slicing form add new pasien add input pemeriksaan
+
+# Step 22 : slicing UI login page
+buat UI login page

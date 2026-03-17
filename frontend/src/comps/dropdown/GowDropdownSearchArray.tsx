@@ -12,6 +12,8 @@ type DropdownProps = {
     placeholder?: string;
     isDisabled?: boolean;
     onChange?: (value: Option) => void;
+    id?:string;
+    name?:string;
 };
 
 const GowDropdownSearchArray = ({
@@ -20,7 +22,9 @@ const GowDropdownSearchArray = ({
     label = "",
     placeholder = "Cari Data...",
     isDisabled = false,
-    onChange
+    onChange,
+    id,
+    name,
 }: DropdownProps) => {
 
     const [inputValue, setInputValue] = useState("");
@@ -48,6 +52,8 @@ const GowDropdownSearchArray = ({
 
             <div className="relative w-full">
                 <input
+                    id={id}
+                    name={name}
                     autoComplete="off"
                     type="text"
                     value={inputValue}

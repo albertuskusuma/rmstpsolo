@@ -124,3 +124,6 @@ search dropdown array,
 
 # Step 17 : make own component search dropdown array
 buat komponen baru dropdown search array
+
+# Step 18 : make own component input text, email, number
+buat komponen input yg bukan date picker

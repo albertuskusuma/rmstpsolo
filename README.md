@@ -133,3 +133,6 @@ buat komponen input date mask, placeholder italic
 
 # Step 20 : rename folder datepicker into datepickermask
 ubah nama folder datepicker jadi datepickermask
+
+# Step 21 : make own component card, textarea, button, fix bug dropdownsearch and slicing UI add new pasien
+buat komponen card kosongan, textarea, button, fix bug dropdownsearch dan slicing form add new pasien

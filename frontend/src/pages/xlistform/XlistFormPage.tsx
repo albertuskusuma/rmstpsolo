@@ -3,6 +3,8 @@ import GowDropdownSearchArray from '../../comps/dropdown/GowDropdownSearchArray'
 import { useState } from 'react';
 import GowInput from '../../comps/input/GowInput';
 import GowDatePickerMask from '../../comps/datepickermask/GowDatePickerMask';
+import GowCard from '../../comps/card/GowCard';
+import GowTextArea from '../../comps/textarea/GowTextArea';
 
 const XlistFormPage = () => {
 
@@ -25,6 +27,9 @@ const XlistFormPage = () => {
 
     // Inputan tanggal
     const [tanggal, setTanggal] = useState("");
+
+    // Inputan Text Area
+    const [selectedTextArea, setSelectedTextArea] = useState("");
 
     return (
         <MainLayout>
@@ -81,6 +86,20 @@ const XlistFormPage = () => {
                     </div>
 
                     <div className="mb-3 sm:col-span-4">
+                        <GowTextArea
+                            id='textarea'
+                            name='textarea'
+                            label='Text Area'
+                            isDisabled={false}
+                            placeholder='Text Area'
+                            onChange={(e) => {
+                                setSelectedTextArea(e)
+                            }}
+                            value={selectedTextArea}
+                        />
+                    </div>
+
+                    <div className="mb-3 sm:col-span-4">
                         <GowDatePickerMask
                             label="Tanggal"
                             value={tanggal}
@@ -92,6 +111,17 @@ const XlistFormPage = () => {
                             placeholder='Contoh 15-11-1993'
                         />
                     </div>
+
+
+                    {/* Card Component */}
+                    <GowCard
+                        children={<>
+                            <p>Hallo</p>
+                        </>}
+                        title='Judul card'
+                        bgCard='bg-indigo-600'
+                    />
+                    {/* Card Component */}
 
                     {/* CHECKBOX AND RADIO BUTTON */}
                     {/* <div>
@@ -150,6 +180,7 @@ const XlistFormPage = () => {
                     {/* CHECKBOX AND RADIO BUTTON */}
                 </div>
 
+
                 <div className="mt-6 flex items-center justify-end gap-x-6">
                     <button type="button" className="text-sm/6 font-semibold text-gray-900">Cancel</button>
                     <button type="button"
@@ -157,7 +188,7 @@ const XlistFormPage = () => {
                             console.log("Dropdown Buah ", selectedFruit)
                             console.log("Nama ", selectedNama)
                             console.log("Email ", selectedEmail)
-                            console.log("Tanggal ",tanggal)
+                            console.log("Tanggal ", tanggal)
                         }}
                         className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
                 </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Option = {
     value: string;
@@ -12,8 +12,8 @@ type DropdownProps = {
     placeholder?: string;
     isDisabled?: boolean;
     onChange?: (value: Option) => void;
-    id?:string;
-    name?:string;
+    id?: string;
+    name?: string;
 };
 
 const GowDropdownSearchArray = ({
@@ -31,6 +31,8 @@ const GowDropdownSearchArray = ({
     const [selectedOption, setSelectedOption] = useState<Option | null>(selected_option);
     const [isOpen, setIsOpen] = useState(false);
     const [highlightIndex, setHighlightIndex] = useState(-1);
+    const ulRef = useRef<HTMLUListElement>(null);
+    const liRefs = useRef<Array<HTMLLIElement | null>>([]);
 
     useEffect(() => {
         if (selected_option) {
@@ -41,6 +43,15 @@ const GowDropdownSearchArray = ({
     const filteredOptions = list_option.filter((f) =>
         f.text.toLowerCase().includes(inputValue.toLowerCase())
     );
+
+    // scroll to highlighted item otomatis
+    useEffect(() => {
+        if (highlightIndex >= 0 && liRefs.current[highlightIndex]) {
+            liRefs.current[highlightIndex]?.scrollIntoView({
+                block: "nearest",
+            });
+        }
+    }, [highlightIndex]);
 
     return (
         <>
@@ -81,37 +92,34 @@ const GowDropdownSearchArray = ({
                     onBlur={() => setTimeout(() => setIsOpen(false), 200)}
                     onKeyDown={(e) => {
                         if (!isOpen) return;
-
                         if (e.key === "ArrowDown") {
                             e.preventDefault();
-                            setHighlightIndex((prev) =>
+                            setHighlightIndex(prev =>
                                 prev < filteredOptions.length - 1 ? prev + 1 : 0
                             );
                         }
-
                         if (e.key === "ArrowUp") {
                             e.preventDefault();
-                            setHighlightIndex((prev) =>
+                            setHighlightIndex(prev =>
                                 prev > 0 ? prev - 1 : filteredOptions.length - 1
                             );
                         }
-
                         if (e.key === "Enter" && highlightIndex >= 0) {
                             e.preventDefault();
-
                             const option = filteredOptions[highlightIndex];
-
                             setSelectedOption(option);
                             setInputValue(option.text);
                             setIsOpen(false);
-
                             onChange?.(option);
                         }
                     }}
                 />
 
                 {isOpen && (
-                    <ul className="absolute left-0 right-0 z-10 mt-1 bg-white border rounded shadow-md max-h-[150px] overflow-y-auto">
+                    <ul
+                        ref={ulRef}
+                        className={`absolute left-0 right-0 z-10 mt-1 bg-white border rounded shadow-md overflow-y-auto ${filteredOptions.length < 4 ? "max-h-20" : "max-h-60"}`}
+                    >
                         {filteredOptions.length === 0 ? (
                             <li className="p-2 text-gray-500">Data Tidak Ditemukan</li>
                         ) : (
@@ -122,20 +130,17 @@ const GowDropdownSearchArray = ({
                                 return (
                                     <li
                                         key={f.value}
+                                        ref={el => {
+                                            liRefs.current[i] = el;
+                                        }}
                                         onClick={() => {
                                             setSelectedOption(f);
                                             setInputValue(f.text);
                                             setHighlightIndex(i);
                                             setIsOpen(false);
-
                                             onChange?.(f);
                                         }}
-                                        className={`p-2 cursor-pointer ${isSelected
-                                                ? "bg-blue-300"
-                                                : isHighlighted
-                                                    ? "bg-gray-200"
-                                                    : ""
-                                            }`}
+                                        className={`p-2 cursor-pointer ${isSelected ? "bg-blue-300" : isHighlighted ? "bg-gray-200" : ""}`}
                                     >
                                         {f.text}
                                     </li>

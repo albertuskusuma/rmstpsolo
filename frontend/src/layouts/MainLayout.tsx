@@ -26,7 +26,7 @@ const MainLayout = ({ children }: any) => {
 
           <li>
             <NavLink
-              to="/pemeriksaan"
+              to="/input-pemeriksaan"
               className={({ isActive }) =>
                 `block p-2 rounded transition ${
                   isActive ? "bg-blue-600" : "hover:bg-gray-700"

@@ -14,5 +14,5 @@ export type addPasienType = {
     nama_ayah: string;
     nama_ibu: string;
     alamat: string;
-    nama_petugas:string;
+    nama_petugas: string;
 };

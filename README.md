@@ -130,3 +130,6 @@ buat komponen input yg bukan date picker
 
 # Step 19 : make own component input date mask, placeholder italic
 buat komponen input date mask, placeholder italic
+
+# Step 20 : rename folder datepicker into datepickermask
+ubah nama folder datepicker jadi datepickermask

@@ -2,7 +2,7 @@ import MainLayout from '../../layouts/MainLayout'
 import GowDropdownSearchArray from '../../comps/dropdown/GowDropdownSearchArray';
 import { useState } from 'react';
 import GowInput from '../../comps/input/GowInput';
-import GowDatePickerMask from '../../comps/datepicker/GowDatePickerMask';
+import GowDatePickerMask from '../../comps/datepickermask/GowDatePickerMask';
 
 const XlistFormPage = () => {
 

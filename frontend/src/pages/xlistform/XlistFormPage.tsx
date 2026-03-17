@@ -1,14 +1,11 @@
-import { useState } from 'react'
 import MainLayout from '../../layouts/MainLayout'
+import GowDropdownSearchArray from '../../comps/dropdown/GowDropdownSearchArray';
+import { useState } from 'react';
 
 const XlistFormPage = () => {
 
-    type Option = {
-        value: string;
-        text: string;
-    };
-
     const fruits = [
+        { value: "default", text: "Pilih Buah" }, // untuk set pertama 
         { value: "apple", text: "Apple" },
         { value: "banana", text: "Banana" },
         { value: "blueberry", text: "Blueberry" },
@@ -16,18 +13,7 @@ const XlistFormPage = () => {
         { value: "lemon", text: "Lemon" }
     ];
 
-    const [inputValue, setInputValue] = useState<string>('');
-    const [selectedOption, setSelectedOption] = useState<Option | null>(null);
-    const [isOpen, setIsOpen] = useState(false);
-    const [highlightIndex, setHighlightIndex] = useState(-1)
-
-    const filtered = fruits.filter(f =>
-        f.text.toLowerCase().includes(inputValue.toLowerCase())
-    );
-
-    const excludeFiltered = fruits.filter(f => !filtered.includes(f));
-
-    const allOptions = [...filtered, ...excludeFiltered];
+    const [selectedFruit, setSelectedFruit] = useState(fruits[0]);
 
     return (
         <MainLayout>
@@ -37,82 +23,17 @@ const XlistFormPage = () => {
                 <form className='p-6' action='#'>
                     <div className="space-y-12">
                         <div className='col-span-full'>
-                            <label className="block text-sm/6 font-medium text-gray-900">Country (Dropdown Search Array)</label>
-                            <div className="relative w-full">
-                                {/* {selectedOption?.text} - {selectedOption?.value} */}
-                                <input
-                                    autoComplete="off"
-                                    type="text"
-                                    value={inputValue}
-                                    placeholder="Cari Data..."
-                                    className="w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600"
-                                    onChange={(e) => {
-                                        setInputValue(e.target.value);
-                                        setIsOpen(true);
-                                    }}
-                                    onFocus={() => {
-                                        setIsOpen(true);
-                                        // highlight ke item yang sudah dipilih
-                                        const index = allOptions.findIndex(
-                                            (opt) => opt.value === selectedOption?.value
-                                        );
-                                        setHighlightIndex(index >= 0 ? index : -1);
-                                    }}
-                                    onBlur={() => setTimeout(() => setIsOpen(false), 200)}
-                                    onKeyDown={(e) => {
-                                        if (!isOpen) return;
-
-                                        if (e.key === "ArrowDown") {
-                                            e.preventDefault();
-                                            setHighlightIndex((prev) => (prev + 1) % allOptions.length || 0);
-                                        }
-
-                                        if (e.key === "ArrowUp") {
-                                            e.preventDefault();
-                                            setHighlightIndex((prev) =>
-                                                (prev - 1 + allOptions.length) % allOptions.length
-                                            );
-                                        }
-
-                                        if (e.key === "Enter" && highlightIndex >= 0) {
-                                            e.preventDefault();
-                                            const option = allOptions[highlightIndex];
-                                            setSelectedOption(option);
-                                            setInputValue(option.text);
-                                            setIsOpen(true); // tetap open jika input fokus
-                                        }
-                                    }}
-                                />
-
-                                {isOpen && (
-                                    <ul className="absolute left-0 right-0 z-10 mt-1 bg-white border rounded shadow-md max-h-[150px] overflow-y-auto">
-                                        {allOptions.map((f, i) => {
-                                            const isSelected = selectedOption?.value === f.value;
-                                            const isHighlighted = highlightIndex === i;
-
-                                            return (
-                                                <li
-                                                    key={f.value}
-                                                    onClick={() => {
-                                                        setSelectedOption(f);
-                                                        setInputValue(f.text);
-                                                        setHighlightIndex(i);
-                                                        setIsOpen(true); // tetap open jika input fokus
-                                                    }}
-                                                    className={`p-2 cursor-pointer ${isSelected
-                                                        ? "bg-blue-300"
-                                                        : isHighlighted
-                                                            ? "bg-gray-200"
-                                                            : ""
-                                                        }`}
-                                                >
-                                                    {f.text}
-                                                </li>
-                                            );
-                                        })}
-                                    </ul>
-                                )}
-                            </div>
+                            <GowDropdownSearchArray
+                                list_option={fruits}
+                                selected_option={selectedFruit}
+                                label="Dropdown Buah"
+                                onChange={(val) => {
+                                    setSelectedFruit(val);
+                                    console.log("buah dipilih:", val);
+                                }}
+                                isDisabled={false}
+                            />
+                            {/* Buah dipilih: {selectedFruit.text} */}
                         </div>
 
                         <div className="">
@@ -190,7 +111,11 @@ const XlistFormPage = () => {
 
                     <div className="mt-6 flex items-center justify-end gap-x-6">
                         <button type="button" className="text-sm/6 font-semibold text-gray-900">Cancel</button>
-                        <button type="submit" className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
+                        <button type="button"
+                            onClick={() => {
+
+                            }}
+                            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
                     </div>
                 </form>
                 {/* end */}

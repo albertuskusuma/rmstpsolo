@@ -121,3 +121,6 @@ atur link untuk login, dashboard, input pemeriksaan
 # Step 16 : Slicing component form input text, number, search dropdown array
 slicing all component form : input text, number,
 search dropdown array,
+
+# Step 17 : make own component search dropdown array
+buat komponen baru dropdown search array

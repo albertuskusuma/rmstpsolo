@@ -127,3 +127,6 @@ buat komponen baru dropdown search array
 
 # Step 18 : make own component input text, email, number
 buat komponen input yg bukan date picker
+
+# Step 19 : make own component input date mask, placeholder italic
+buat komponen input date mask, placeholder italic

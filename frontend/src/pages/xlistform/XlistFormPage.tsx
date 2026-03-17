@@ -2,6 +2,7 @@ import MainLayout from '../../layouts/MainLayout'
 import GowDropdownSearchArray from '../../comps/dropdown/GowDropdownSearchArray';
 import { useState } from 'react';
 import GowInput from '../../comps/input/GowInput';
+import GowDatePickerMask from '../../comps/datepicker/GowDatePickerMask';
 
 const XlistFormPage = () => {
 
@@ -21,6 +22,9 @@ const XlistFormPage = () => {
 
     // Inputan Email
     const [selectedEmail, setSelectedEmail] = useState("");
+
+    // Inputan tanggal
+    const [tanggal, setTanggal] = useState("");
 
     return (
         <MainLayout>
@@ -50,8 +54,8 @@ const XlistFormPage = () => {
                             id='inputNama'
                             name='inputNama'
                             label='Nama'
-                            isDisabled={false}
-                            placeholder=''
+                            isDisabled={true}
+                            placeholder='Nama'
                             type='text'
                             onChange={(e) => {
                                 setSelectedNama(e)
@@ -67,12 +71,25 @@ const XlistFormPage = () => {
                             name='inputEmail'
                             label='Email'
                             isDisabled={false}
-                            placeholder=''
+                            placeholder='Email'
                             type='email'
                             onChange={(e) => {
                                 setSelectedEmail(e)
                             }}
                             value={selectedEmail}
+                        />
+                    </div>
+
+                    <div className="mb-3 sm:col-span-4">
+                        <GowDatePickerMask
+                            label="Tanggal"
+                            value={tanggal}
+                            onChange={(val) => {
+                                console.log("ISO:", val);
+                                setTanggal(val);
+                            }}
+                            isDisabled={false}
+                            placeholder='Contoh 15-11-1993'
                         />
                     </div>
 
@@ -140,6 +157,7 @@ const XlistFormPage = () => {
                             console.log("Dropdown Buah ", selectedFruit)
                             console.log("Nama ", selectedNama)
                             console.log("Email ", selectedEmail)
+                            console.log("Tanggal ",tanggal)
                         }}
                         className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
                 </div>

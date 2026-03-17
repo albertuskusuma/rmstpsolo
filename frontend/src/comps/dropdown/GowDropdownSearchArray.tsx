@@ -59,7 +59,7 @@ const GowDropdownSearchArray = ({
                     value={inputValue}
                     disabled={isDisabled}
                     placeholder={placeholder}
-                    className={`w-full rounded-md px-3 py-1.5 text-base outline outline-1
+                    className={`w-full rounded-md px-3 py-1.5 text-base outline outline-1 placeholder:italic
                         ${isDisabled
                             ? "bg-gray-200 text-base outline-gray-300 cursor-not-allowed"
                             : "bg-white text-gray-900 outline-gray-300 focus:outline-2 focus:outline-indigo-600"

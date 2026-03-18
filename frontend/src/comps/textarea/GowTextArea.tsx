@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 type InputProps = {
     id: string;
@@ -21,6 +21,10 @@ const GowTextArea = ({
 }: InputProps) => {
 
     const [selectedTextArea, setSelectedTextArea] = useState<string>(value ?? '');
+
+    useEffect(() => {
+        setSelectedTextArea(value ?? '');
+    }, [value]);
 
     return (
         <>

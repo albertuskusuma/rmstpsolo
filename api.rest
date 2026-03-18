@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:3000/api
 
 ### getPasiensBySearch
-GET {{baseUrl}}/pasien/getPasiensBySearch?search=q222
+GET {{baseUrl}}/pasien/getPasiensBySearch?search=
 Content-Type: application/json
 
 ### getNoRm

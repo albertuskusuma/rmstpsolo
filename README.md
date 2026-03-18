@@ -143,3 +143,6 @@ buat UI login page
 # Step 23 : proses login into BE using axios, logout, protecting route, check accessToken & refreshToken, cookie parser
 proses login ke BE pakai axios, protecting route, check accessToken & refreshToken
 install di BE npm install cookie-parser, npm i --save-dev @types/cookie-parser
+
+# Step 24 : selected kode_reg, no_rm, populate every biodata pasien from no_rm selected
+proses get kode_reg dan get data pasien by no_rm

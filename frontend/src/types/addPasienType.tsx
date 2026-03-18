@@ -1,6 +1,9 @@
 export type addPasienType = {
+    id_pasien: string;
     no_rm: string;              // kolom 1
     nama_pasien: string;
+    value: string,
+    text: string,
     nik: string;
     kategori_pasien: string;
     jenis_kelamin: string;
@@ -16,3 +19,9 @@ export type addPasienType = {
     alamat: string;
     nama_petugas: string;
 };
+
+// export type DropdownOption = {
+//     value: string;
+//     text: string;
+//     fullData?: addPasienType; // optional, untuk simpan data lengkap pasien
+// };

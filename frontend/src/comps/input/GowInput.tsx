@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 type InputProps = {
     id: string;
@@ -23,6 +23,10 @@ const GowInput = ({
 }: InputProps) => {
 
     const [selectedInp, setSelectedInp] = useState<string>(value ?? '');
+
+    useEffect(() => {
+        setSelectedInp(value ?? '');
+    }, [value]);
 
     return (
         <>

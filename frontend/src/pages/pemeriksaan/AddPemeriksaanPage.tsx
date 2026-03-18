@@ -3,13 +3,15 @@ import MainLayout from '../../layouts/MainLayout'
 import GowCard from '../../comps/card/GowCard'
 import GowInput from '../../comps/input/GowInput'
 import { useEffect, useState } from 'react';
-import type { addPasienType } from '../../types/addPasienType';
+import type { addPasienType, DropdownOption } from '../../types/addPasienType';
 import GowDropdownSearchArray from '../../comps/dropdown/GowDropdownSearchArray';
 import GowDatePickerMask from '../../comps/datepickermask/GowDatePickerMask';
 import GowTextArea from '../../comps/textarea/GowTextArea';
 import GowButton from '../../comps/button/GowButton';
 import type { addPermintaanPemeriksaan, addInputHasilPeriksa } from '../../types/addPemeriksaanType';
 import { getAccessToken } from "../../auth/auth";
+import api from "../../api/axios";
+import { getUser } from "../../types/loginType";
 
 const AddPemeriksaanPage = () => {
 
@@ -23,13 +25,8 @@ const AddPemeriksaanPage = () => {
 
     const [selectedJenisKelamin, setSelectedJenisKelamin] = useState(jenis_kelamin_arr[0]);
 
-    const no_rm_arr = [
-        { value: "default", text: "Pilih No RM" },
-        { value: "RM1212", text: "RM1212 - Gabriela Daniswari" },
-        { value: "RM1451", text: "RM1451 - Clara Estelita" }
-    ];
-
-    const [selectedNoRm, setSelectedNoRm] = useState(no_rm_arr[0]);
+    const [listPasienByRM, setListPasienByRM] = useState<addPasienType[]>([]);
+    const [selectedNoRm, setSelectedNoRm] = useState<addPasienType | null>(null);
 
     const status_kawin_arr = [
         { value: "default", text: "Pilih Status Kawin" },
@@ -64,6 +61,7 @@ const AddPemeriksaanPage = () => {
     const [selectedSubPeriksa, setSelectedSubPeriksa] = useState(sub_periksa_arr[0]);
 
     const [getPasien, setGetPasien] = useState<addPasienType>({
+        id_pasien: "",
         no_rm: "",
         nama_pasien: "",
         nik: "",
@@ -80,6 +78,8 @@ const AddPemeriksaanPage = () => {
         nama_ibu: "",
         alamat: "",
         nama_petugas: "",
+        value: "",
+        text: "",
     });
 
     const [addPermintaanPemeriksaan, setAddPermintaanPemeriksaan] = useState<addPermintaanPemeriksaan>({
@@ -98,10 +98,40 @@ const AddPemeriksaanPage = () => {
         tanggal_periksa: ""
     });
 
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         const fetchData = async () => {
             const token = getAccessToken();
             if (!token) return;
+
+            setLoading(true);
+
+            try {
+                // get kode_reg
+                const resKode = await api.get("/pasien/getKodeReg");
+                if (resKode.data.status === "OK") {
+                    setAddPermintaanPemeriksaan(prev => ({
+                        ...prev,
+                        kode_reg: resKode.data.data?.toString() || ""
+                    }));
+                }
+
+                // get list pasien
+                const res = await api.get("/pasien/getPasiensBySearch?search=");
+                if (res.data.status === "OK") {
+                    const dataWithPetugas = res.data.data.map((item: any) => ({
+                        ...item,
+                        nama_petugas: getUser()?.username || ""
+                    }));
+
+                    setListPasienByRM(dataWithPetugas);
+                    setLoading(false);
+                }
+            } catch (error) {
+                setLoading(false);
+                console.error("Error fetching data", error);
+            }
         };
 
         fetchData();
@@ -133,27 +163,24 @@ const AddPemeriksaanPage = () => {
                             label="Kode Reg"
                             placeholder="Kode Reg"
                             type="text"
-                            onChange={(val) =>
-                                setAddPermintaanPemeriksaan(prev => ({
-                                    ...prev,
-                                    kode_reg: val
-                                }))
-                            }
                         />
                     </div>
                     <div className="grid grid-cols-3 gap-4">
                         <div className="p-2 space-y-3">
                             {/* No RM */}
                             <GowDropdownSearchArray
-                                list_option={no_rm_arr}
+                                list_option={listPasienByRM}
                                 selected_option={selectedNoRm}
                                 label="No RM"
                                 onChange={(val) => {
-                                    setSelectedNoRm(val);
-                                    setGetPasien(prev => ({
-                                        ...prev,
-                                        no_rm: val.value
-                                    }))
+                                    const pasien = listPasienByRM.find(
+                                        (p) => p.no_rm === val.value
+                                    );
+
+                                    if (pasien) {
+                                        setGetPasien(pasien);
+                                        setSelectedNoRm(pasien);
+                                    }
                                 }}
                                 isDisabled={false}
                                 id='no_rm'
@@ -212,20 +239,20 @@ const AddPemeriksaanPage = () => {
                             />
 
                             {/* Jenis Kelamin */}
-                            <GowDropdownSearchArray
-                                list_option={jenis_kelamin_arr}
-                                selected_option={selectedJenisKelamin}
+                            <GowInput
+                                id="jenis_kelamin"
+                                name="jenis_kelamin"
+                                value={getPasien.jenis_kelamin}
+                                isDisabled={true}
                                 label="Jenis Kelamin"
-                                onChange={(val) => {
-                                    setSelectedJenisKelamin(val);
+                                placeholder="Jenis Kelamin"
+                                type="text"
+                                onChange={(val) =>
                                     setGetPasien(prev => ({
                                         ...prev,
-                                        jenis_kelamin: val.value
+                                        jenis_kelamin: val
                                     }))
-                                }}
-                                isDisabled={true}
-                                id='jenis_kelamin'
-                                name='jenis_kelamin'
+                                }
                             />
 
                             {/* Dokter Pengirim */}
@@ -278,20 +305,20 @@ const AddPemeriksaanPage = () => {
                             />
 
                             {/* Status Kawin */}
-                            <GowDropdownSearchArray
-                                list_option={status_kawin_arr}
-                                selected_option={selectedStatusKawin}
-                                label="Status Kawin"
-                                onChange={(val) => {
-                                    setSelectedStatusKawin(val);
-                                    setGetPasien(prev => ({
-                                        ...prev,
-                                        status_kawin: val.value
-                                    }))
-                                }}
-                                isDisabled={true}
+                            <GowInput
                                 id='status_kawin'
                                 name='status_kawin'
+                                value={getPasien.status_kawin}
+                                isDisabled={true}
+                                label='Status Kawin'
+                                onChange={(e) => {
+                                    setGetPasien(prev => ({
+                                        ...prev,
+                                        status_kawin: e
+                                    }))
+                                }}
+                                type='text'
+                                placeholder='Status Kawin'
                             />
 
                             {/* No Telp */}

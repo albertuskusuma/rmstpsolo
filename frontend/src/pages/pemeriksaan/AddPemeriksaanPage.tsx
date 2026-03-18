@@ -2,13 +2,14 @@ import { useNavigate } from "react-router-dom";
 import MainLayout from '../../layouts/MainLayout'
 import GowCard from '../../comps/card/GowCard'
 import GowInput from '../../comps/input/GowInput'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { addPasienType } from '../../types/addPasienType';
 import GowDropdownSearchArray from '../../comps/dropdown/GowDropdownSearchArray';
 import GowDatePickerMask from '../../comps/datepickermask/GowDatePickerMask';
 import GowTextArea from '../../comps/textarea/GowTextArea';
 import GowButton from '../../comps/button/GowButton';
 import type { addPermintaanPemeriksaan, addInputHasilPeriksa } from '../../types/addPemeriksaanType';
+import { getAccessToken } from "../../auth/auth";
 
 const AddPemeriksaanPage = () => {
 
@@ -96,6 +97,15 @@ const AddPemeriksaanPage = () => {
         nilai_normal: "",
         tanggal_periksa: ""
     });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const token = getAccessToken();
+            if (!token) return;
+        };
+
+        fetchData();
+    }, []);
 
     return <MainLayout>
         <div>

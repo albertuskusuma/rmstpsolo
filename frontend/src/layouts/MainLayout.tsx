@@ -1,7 +1,21 @@
-import React from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
+import api from '../api/axios';
+import { clearAccessToken } from '../auth/auth';
+import { getUser } from '../types/loginType';
 
 const MainLayout = ({ children }: any) => {
+
+  const handleLogout = async () => {
+    try {
+      await api.post("/login/logout", {}, { withCredentials: true }); // hapus cookie di backend
+    } catch {
+      console.log("gagal logout di server");
+    } finally {
+      clearAccessToken();
+      window.location.href = "/";
+    }
+  };
+
   return (
     <div className="flex min-h-screen">
 
@@ -15,8 +29,7 @@ const MainLayout = ({ children }: any) => {
             <NavLink
               to="/"
               className={({ isActive }) =>
-                `block p-2 rounded transition ${
-                  isActive ? "bg-blue-600" : "hover:bg-gray-700"
+                `block p-2 rounded transition ${isActive ? "bg-blue-600" : "hover:bg-gray-700"
                 }`
               }
             >
@@ -28,13 +41,20 @@ const MainLayout = ({ children }: any) => {
             <NavLink
               to="/input-pemeriksaan"
               className={({ isActive }) =>
-                `block p-2 rounded transition ${
-                  isActive ? "bg-blue-600" : "hover:bg-gray-700"
+                `block p-2 rounded transition ${isActive ? "bg-blue-600" : "hover:bg-gray-700"
                 }`
               }
             >
               Input Pemeriksaan
             </NavLink>
+          </li>
+
+          <li>
+            <button 
+              onClick={handleLogout}
+              className='block p-2 rounded transition hover:bg-gray-700'>
+              Logout
+            </button>
           </li>
 
         </ul>
@@ -45,7 +65,7 @@ const MainLayout = ({ children }: any) => {
 
         {/* Topbar */}
         <div className="h-16 bg-white border-b flex items-center justify-end px-6">
-          Welcome, Sindhu
+          Welcome, {getUser()?.username}
         </div>
 
         {/* Page Content */}

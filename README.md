@@ -139,3 +139,7 @@ buat komponen card kosongan, textarea, button, fix bug dropdownsearch dan slicin
 
 # Step 22 : slicing UI login page
 buat UI login page
+
+# Step 23 : proses login into BE using axios, logout, protecting route, check accessToken & refreshToken, cookie parser
+proses login ke BE pakai axios, protecting route, check accessToken & refreshToken
+install di BE npm install cookie-parser, npm i --save-dev @types/cookie-parser

@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
-import type { loginType } from '../../types/loginType';
+import React, { useEffect, useState } from 'react';
+import { setUser, type loginType } from '../../types/loginType';
 import GowInput from '../../comps/input/GowInput';
 import GowButton from '../../comps/button/GowButton';
+import { useNavigate } from 'react-router-dom';
+import api from '../../api/axios';
+import { getAccessToken, setAccessToken } from '../../auth/auth';
 
-const LoginPage: React.FC = () => {
+const LoginPage = () => {
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
     const [loginForm, setLoginForm] = useState<loginType>({
         username: '',
         password: '',
@@ -16,9 +22,35 @@ const LoginPage: React.FC = () => {
         }));
     };
 
-    const handleLogin = () => {
-        console.log('Login:', loginForm);
+    const handleLogin = async () => {
+        // console.log('Login:', loginForm);
+        setLoading(true);
+        try {
+            const res = await api.post("/login/getUserLogin", {
+                "username": loginForm.username,
+                "password": loginForm.password
+            });
+
+            if (res.data.status == "OK") {
+                setLoading(false)
+                setAccessToken(res.data.accessToken)
+                setUser(res.data.data);
+                navigate("/dashboard", { replace: true });
+            } else {
+                setLoading(false);
+                console.log("Login gagal")
+            }
+        } catch (error) {
+            setLoading(false);
+            console.log("Err : Server Error", error)
+        }
     };
+
+    useEffect(() => {
+        if (getAccessToken()) {
+            navigate("/dashboard", { replace: true });
+        }
+    }, []);
 
     return (
         <div className="min-h-screen bg-gray-200 flex items-center justify-center">
@@ -50,7 +82,7 @@ const LoginPage: React.FC = () => {
                 {/* space */}
                 <div className='mt-5'></div>
                 <GowButton
-                    title="Login"
+                    title={loading ? "Process" : "Login"}
                     isDisabled={false}
                     color="bg-teal-500 hover:bg-teal-600 transition"
                     onClick={handleLogin}

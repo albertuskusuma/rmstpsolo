@@ -1,7 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import MainLayout from '../../layouts/MainLayout'
+import { getAccessToken } from '../../auth/auth';
 
 const DashboardPage = () => {
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const token = getAccessToken();
+            if (!token) return;
+        };
+
+        fetchData();
+    }, []);
+
     return (
         <MainLayout>
             <div>

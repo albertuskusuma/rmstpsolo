@@ -44,14 +44,14 @@ export const getUserLogin = async (req: Request, res: Response) => {
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: false,
-            sameSite: "strict",
+            sameSite: "lax",
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
 
         return res.json({
             status: "OK",
             data: payload,
-            accessToken:accessToken,
+            accessToken: accessToken,
             message: "User Login berhasil"
         })
     } catch (error) {
@@ -63,40 +63,35 @@ export const getUserLogin = async (req: Request, res: Response) => {
     }
 }
 
-export const refreshToken = (req:Request,res:Response)=>{
+export const refreshToken = (req: Request, res: Response) => {
+    const token = req.cookies?.refreshToken;
 
-    const token = req.cookies.refreshToken
-
-    if(!token){
-        return res.status(401).json({message:"Token tidak ada"})
+    if (!token) {
+        return res.status(401).json({ message: "Token tidak ada, silahkan login" });
     }
 
-    try{
-
-        const decoded:any = jwt.verify(
-            token,
-            process.env.JWT_REFRESH_SECRET as string
-        )
+    try {
+        const decoded: any = jwt.verify(token, process.env.JWT_REFRESH_SECRET as string);
 
         const accessToken = generateAccessToken({
-            id_users:decoded.id_users,
-            role_user:decoded.role_user
-        })
+            id_users: decoded.id_users,
+            role_user: decoded.role_user
+        });
 
-        return res.json({accessToken})
+        return res.json({ accessToken });
 
-    }catch(err){
-        return res.status(403).json({message:"Token invalid"})
+    } catch (err) {
+        console.log(err); // optional log
+        return res.status(403).json({ message: "Token invalid, silahkan login lagi" });
     }
+};
 
-}
-
-export const logout = (req:Request,res:Response)=>{
+export const logout = (req: Request, res: Response) => {
 
     res.clearCookie("refreshToken")
 
     return res.json({
-        message:"Logout berhasil"
+        message: "Logout berhasil"
     })
 
 }

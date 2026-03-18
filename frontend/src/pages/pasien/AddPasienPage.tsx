@@ -1,12 +1,13 @@
 import MainLayout from '../../layouts/MainLayout'
 import GowCard from '../../comps/card/GowCard'
 import GowInput from '../../comps/input/GowInput'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { addPasienType } from '../../types/addPasienType';
 import GowDropdownSearchArray from '../../comps/dropdown/GowDropdownSearchArray';
 import GowDatePickerMask from '../../comps/datepickermask/GowDatePickerMask';
 import GowTextArea from '../../comps/textarea/GowTextArea';
 import GowButton from '../../comps/button/GowButton';
+import { getAccessToken } from '../../auth/auth';
 
 const AddPasienPage = () => {
 
@@ -44,6 +45,15 @@ const AddPasienPage = () => {
         alamat: "",
         nama_petugas: "",
     });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const token = getAccessToken();
+            if (!token) return;
+        };
+
+        fetchData();
+    }, []);
 
     return <MainLayout>
         <div>
@@ -326,7 +336,7 @@ const AddPasienPage = () => {
                     </div>
 
                     <div className='mt-4 p-2'>
-                        <GowButton 
+                        <GowButton
                             title='Simpan Data'
                             isDisabled={false}
                             color='bg-blue-500'

@@ -7,6 +7,7 @@ import pasienRoute from "./routes/pasienRoute"
 import transPemeriksaanRoute from "./routes/transPemeriksaanRoute"
 import printPdfRoute from "./routes/printPdfRoute"
 import authRoute from "./routes/authRoute"
+import cookieParser from "cookie-parser";
 
 const app = express()
 
@@ -18,8 +19,14 @@ pool.connect()
         console.log("database connection error ",err)
     })
 
-app.use(cors())
+app.use(cors({
+    origin: process.env.ORIGIN_FE,
+    credentials:true
+}))
+
 app.use(express.json())
+
+app.use(cookieParser());
 
 app.get("/", (req,res) => {
     res.send("backend running")

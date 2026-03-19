@@ -12,12 +12,16 @@ Content-Type: application/json
 GET {{baseUrl}}/pasien/getKodeReg
 Content-Type: application/json
 
+### getMasterPemeriksaan
+GET {{baseUrl}}/transperiksa/getMasterPemeriksaan
+Content-Type: application/json
+
 ### addTransPemeriksaanHeader
 POST {{baseUrl}}/transperiksa/addTransPemeriksaanHeader
 Content-Type: application/json
 
 {
-    "kode_reg":"P1",
+    "kode_reg":"P0",
     "id_pasien":1,
     "tanggal_periksa":"2026-03-14",
     "is_active":1,
@@ -55,6 +59,14 @@ Content-Type: application/json
     "id_tx_detail_pemeriksaan":9
 }
 
+###getDetailPemeriksaan
+POST {{baseUrl}}/transperiksa/getDetailPemeriksaan
+Content-Type: application/json
+
+{
+    "kode_reg":"P1"
+}
+
 ### getPrintPdfPermintaanPemeriksaanLab
 POST {{baseUrl}}/printpdf/getPrintPdfPermintaanPemeriksaanLab
 Content-Type: application/json
@@ -70,6 +82,7 @@ Content-Type: application/json
 {
     "kode_reg":"P1"
 }
+
 
 ### getPrintPdfBayarLab
 POST {{baseUrl}}/printpdf/getPrintPdfBayarLab

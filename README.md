@@ -146,3 +146,9 @@ install di BE npm install cookie-parser, npm i --save-dev @types/cookie-parser
 
 # Step 24 : selected kode_reg, no_rm, populate every biodata pasien from no_rm selected
 proses get kode_reg dan get data pasien by no_rm
+
+# Step 25 : make own component custom sweet alert, add permintaan pemeriksaan, add hasil periksa, delete periksa
+tambahkan sweet alert npm install sweetalert2 sweetalert2-react-content
+buat get data master pemeriksaan
+biat get data detail hasil periksa by kode_reg
+add permintaan pemeriksaan, add hasil periksa, delete periksa

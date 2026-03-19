@@ -34,17 +34,22 @@ const GowDropdownSearchArray = ({
     const ulRef = useRef<HTMLUListElement>(null);
     const liRefs = useRef<Array<HTMLLIElement | null>>([]);
 
+    // Reset selectedOption & inputValue if selected_option change from parent
     useEffect(() => {
         if (selected_option) {
             setSelectedOption(selected_option);
+            setInputValue(selected_option.text);
+        } else {
+            setSelectedOption(null);
+            setInputValue(""); // reset input if parent give null
         }
+        setHighlightIndex(-1); // reset highlight
     }, [selected_option]);
 
     const filteredOptions = list_option.filter((f) =>
         f.text.toLowerCase().includes(inputValue.toLowerCase())
     );
 
-    // scroll to highlighted item otomatis
     useEffect(() => {
         if (highlightIndex >= 0 && liRefs.current[highlightIndex]) {
             liRefs.current[highlightIndex]?.scrollIntoView({
@@ -82,11 +87,9 @@ const GowDropdownSearchArray = ({
                     }}
                     onFocus={() => {
                         setIsOpen(true);
-
                         const index = list_option.findIndex(
                             (opt) => opt.value === selectedOption?.value
                         );
-
                         setHighlightIndex(index >= 0 ? index : -1);
                     }}
                     onBlur={() => setTimeout(() => setIsOpen(false), 200)}

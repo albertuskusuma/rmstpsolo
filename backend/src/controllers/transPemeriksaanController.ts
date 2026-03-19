@@ -95,3 +95,41 @@ export const hapusHasilPemeriksaanDetail = async(req: Request, res: Response) =>
         })
     }
 }
+
+export const getMasterPemeriksaan = async(req: Request, res: Response) => {
+    try {
+        const param = req.body;
+        const data = await transPemeriksaanService.getMasterPemeriksaan()
+
+        return res.json({
+            status:"OK",
+            data:data,
+            message:"Berhasil get data master pemeriksaan"
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            status:"Err",
+            message:"Gagal hapus detail"
+        })
+    }
+}
+
+export const getDetailPemeriksaan = async(req: Request, res: Response) => {
+    try {
+        const param = req.body;
+        const data = await transPemeriksaanService.getDetailPemeriksaan(param.kode_reg as string)
+
+        return res.json({
+            status:"OK",
+            data:data,
+            message:"Berhasil get data detail pemeriksaan"
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            status:"Err",
+            message:"Gagal get data"
+        })
+    }
+}

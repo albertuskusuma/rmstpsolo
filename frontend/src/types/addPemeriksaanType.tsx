@@ -13,3 +13,32 @@ export type addInputHasilPeriksa = {
     harga:string,
     tanggal_periksa:string,
 }
+
+export type subPeriksaObj = {
+    value: string,
+    text: string,
+    harga: string,
+}
+
+export type jenisPeriksaObj = {
+    value: string,
+    text: string,
+    dataSub: subPeriksaObj[]
+}
+
+export type bidangPeriksaObj = {
+    value: string,
+    text: string,
+    dataJenis: jenisPeriksaObj[],
+    dataSub: subPeriksaObj[]
+}
+
+export type detailPeriksa = {
+    id_tx_detail_pemeriksaan: string,
+    nama_bidang_periksa: string,
+    nama_pemeriksaan: string,
+    nama_sub_periksa: string,
+    hasil: string
+    nilai_normal: string,
+    harga: string,
+}

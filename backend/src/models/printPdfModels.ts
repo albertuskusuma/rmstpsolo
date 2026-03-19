@@ -56,6 +56,7 @@ export interface Header {
     tanggal_lahir: string;
     no_hp: string;
     no_kk: string;
+    no_rm:string;
 
     // dari u.nama (rename biar jelas)
     nama_petugas: string;
@@ -70,6 +71,19 @@ export interface Pemeriksaan {
 export interface DataPDF {
     header: Header;
     list_pemeriksaan: Pemeriksaan[];
+}
+
+export interface HasilPemeriksaan {
+    nama_bidang_periksa: string;
+    nama_pemeriksaan: string;
+    nama_sub_periksa: string;
+    hasil: string;
+    nilai_normal: string;
+}
+
+export interface DataPDFHasilLab {
+    header: Header;
+    list_hasil_pemeriksaan: HasilPemeriksaan[];
 }
 
 export const getPrintPdfPermintaanPemeriksaanLab = async (kode_reg: string): Promise<DataPDF> => {
@@ -91,7 +105,8 @@ export const getPrintPdfPermintaanPemeriksaanLab = async (kode_reg: string): Pro
             p.no_hp, 
             p.no_kk, 
             p.nama_ibu, 
-            u.nama AS nama_petugas
+            u.nama AS nama_petugas,
+            p.no_rm
         FROM tx_pemeriksaan as txp
         JOIN pasien as p
             ON txp.id_pasien = p.id_pasien
@@ -131,7 +146,7 @@ export const getPrintPdfPermintaanPemeriksaanLab = async (kode_reg: string): Pro
     }
 }
 
-export const getPrintPdfHasilPemeriksaanLab = async (kode_reg: string): Promise<printPdfHasilPemeriksaanLab> => {
+export const getPrintPdfHasilPemeriksaanLab = async (kode_reg: string): Promise<DataPDFHasilLab> => {
     try {
         // header
         let queryHeader = `SELECT 
@@ -150,7 +165,8 @@ export const getPrintPdfHasilPemeriksaanLab = async (kode_reg: string): Promise<
             p.no_hp, 
             p.no_kk, 
             p.nama_ibu, 
-            u.nama
+            u.nama AS nama_petugas,
+            p.no_rm
         FROM tx_pemeriksaan as txp
         JOIN pasien as p
             ON txp.id_pasien = p.id_pasien
@@ -197,7 +213,7 @@ export const getPrintPdfHasilPemeriksaanLab = async (kode_reg: string): Promise<
 
         return {
             header: resultHeader.rows[0],
-            list_hasil: hasilP.rows
+            list_hasil_pemeriksaan: hasilP.rows
         };
     } catch (error: any) {
         throw error

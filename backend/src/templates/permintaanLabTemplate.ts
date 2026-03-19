@@ -88,20 +88,20 @@ export const generateHTML = (data: DataPDF): string => {
         table.data {
           width: 100%;
           border-collapse: collapse;
-          margin-top: 15px;
+          margin-top: 10px;
           font-size: 13px;
         }
 
         table.data th {
           border: 1px solid black;
-          padding: 7px;
+          padding: 4px;
           background: #f2f2f2;
           text-align: center;
         }
 
         table.data td {
           border: 1px solid black;
-          padding: 6px;
+          padding: 4px;
         }
 
         .kop-line {

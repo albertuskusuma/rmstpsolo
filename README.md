@@ -156,3 +156,6 @@ add permintaan pemeriksaan, add hasil periksa, delete periksa
 # Step 25 : slicing print form permintaan using pupeteer, tester print form permintaan
 install pupeteer  npm install puppeteer
 slicing print form permintaan
+
+# Step 26 : slicing print form hasil periksa using pupeteer, tester print form hasil periksa
+slicing print form hasil periksa

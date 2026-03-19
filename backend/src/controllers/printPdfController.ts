@@ -45,11 +45,18 @@ export const getPrintPdfHasilPemeriksaanLab = async (req: Request, res: Response
         const param = req.body
         const data = await printPdfService.getPrintPdfHasilPemeriksaanLab(String(param.kode_reg))
 
-        return res.json({
-            status: "OK",
-            data: data,
-            message: "Print PDF Hasil Lab berhasil"
-        })
+        const pdf = data
+
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader("Content-Disposition", "inline; filename=lab.pdf");
+
+        res.send(pdf);
+
+        // return res.json({
+        //     status:"OK",
+        //     data:data,
+        //     message:"Print PDF Permintaan Lab berhasil"
+        // })
     } catch (error) {
          console.error(error);
         return res.status(500).json({

@@ -304,6 +304,51 @@ const AddPemeriksaanPage = () => {
         }
     }
 
+    const baseUrl = import.meta.env.VITE_API_URL;
+    
+    const handlePrintPdfPermintaanPeriksa = async () => {
+        setLoading(true);
+        try {
+            const payload = {
+                // kode_reg: "P1", // ganti sesuai kebutuhan
+                kode_reg: addPermintaanPemeriksaan.kode_reg
+            };
+
+            // Gunakan fetch agar bisa ambil blob PDF
+            const response = await fetch(`${baseUrl}/printpdf/getPrintPdfPermintaanPemeriksaanLab`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+                throw new Error("Gagal mengambil PDF");
+            }
+
+            // Ambil PDF sebagai Blob
+            const blob = await response.blob();
+
+            // Buat URL sementara untuk buka PDF
+            const url = window.URL.createObjectURL(blob);
+
+            // Buka PDF di tab baru
+            window.open(url, "_blank");
+
+            return true; // optional, kalau mau pakai return
+        } catch (error) {
+            console.error("Error fetching PDF", error);
+            showAlert({
+                icon: "error",
+                title: "Gagal",
+                text: "Error fetching PDF",
+            });
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return <MainLayout>
         <div>
@@ -625,12 +670,10 @@ const AddPemeriksaanPage = () => {
                         />
 
                         <GowButton
-                            title='Print Form. Permintaan Pemeriksaan'
+                            title={loading ? "Process" : 'Print Form. Permintaan Pemeriksaan'}
                             isDisabled={false}
                             color="bg-yellow-500"
-                            onClick={() => {
-                                console.log("Inputan Permintaan Pemeriksaan ", addPermintaanPemeriksaan)
-                            }}
+                            onClick={handlePrintPdfPermintaanPeriksa}
                         />
                     </div>
                 </>}

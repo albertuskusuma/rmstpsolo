@@ -11,36 +11,68 @@ export interface headerModel {
 }
 
 export interface detailPemeriksaanModel {
-    nama_bidang_periksa:string,
-    nama_pemeriksaan:string,
-    nama_sub_periksa:string,
+    nama_bidang_periksa: string,
+    nama_pemeriksaan: string,
+    nama_sub_periksa: string,
 }
 
 export interface printPdfPermintaanPemeriksaanLab {
-    header:headerModel,
-    list_pemeriksaan:detailPemeriksaanModel[]
+    header: headerModel,
+    list_pemeriksaan: detailPemeriksaanModel[]
 }
 
 export interface listHasilPemeriksaanModel {
-    nama_bidang_periksa:string,
-    nama_pemeriksaan:string,
-    nama_sub_periksa:string,
-    hasil:string,
-    nilai_normal:string
+    nama_bidang_periksa: string,
+    nama_pemeriksaan: string,
+    nama_sub_periksa: string,
+    hasil: string,
+    nilai_normal: string
 }
 
 export interface printPdfHasilPemeriksaanLab {
-    header:headerModel,
-    list_hasil:listHasilPemeriksaanModel[]
+    header: headerModel,
+    list_hasil: listHasilPemeriksaanModel[]
 }
 
 export interface printPdfBayarLab {
-    header:headerModel,
-    total_harga:number,
-    list_hasil:listHasilPemeriksaanModel[]
+    header: headerModel,
+    total_harga: number,
+    list_hasil: listHasilPemeriksaanModel[]
 }
 
-export const getPrintPdfPermintaanPemeriksaanLab = async (kode_reg:string): Promise<printPdfPermintaanPemeriksaanLab> =>{
+export interface Header {
+    kode_reg: string;
+    nama_pasien: string;
+    dokter_pengirim: string;
+    gol_darah: string;
+    status_kawin: string;
+    pekerjaan: string;
+    nama_ayah: string;
+    nama_ibu: string;
+    alamat: string;
+    tanggal_registrasi: string;
+    kategori_pasien: string;
+    jenis_kelamin: string;
+    tanggal_lahir: string;
+    no_hp: string;
+    no_kk: string;
+
+    // dari u.nama (rename biar jelas)
+    nama_petugas: string;
+}
+
+export interface Pemeriksaan {
+    nama_bidang_periksa: string;
+    nama_pemeriksaan: string;
+    nama_sub_periksa: string;
+}
+
+export interface DataPDF {
+    header: Header;
+    list_pemeriksaan: Pemeriksaan[];
+}
+
+export const getPrintPdfPermintaanPemeriksaanLab = async (kode_reg: string): Promise<DataPDF> => {
     try {
         // header
         let queryHeader = `SELECT 
@@ -59,7 +91,7 @@ export const getPrintPdfPermintaanPemeriksaanLab = async (kode_reg:string): Prom
             p.no_hp, 
             p.no_kk, 
             p.nama_ibu, 
-            u.nama
+            u.nama AS nama_petugas
         FROM tx_pemeriksaan as txp
         JOIN pasien as p
             ON txp.id_pasien = p.id_pasien
@@ -91,15 +123,15 @@ export const getPrintPdfPermintaanPemeriksaanLab = async (kode_reg:string): Prom
         const detail = await pool.query(queryDetail)
 
         return {
-            header:resultHeader.rows[0],
-            list_pemeriksaan:detail.rows
+            header: resultHeader.rows[0],
+            list_pemeriksaan: detail.rows
         };
-    } catch (error:any) {
+    } catch (error: any) {
         throw error
     }
 }
 
-export const getPrintPdfHasilPemeriksaanLab = async (kode_reg:string): Promise<printPdfHasilPemeriksaanLab> =>{
+export const getPrintPdfHasilPemeriksaanLab = async (kode_reg: string): Promise<printPdfHasilPemeriksaanLab> => {
     try {
         // header
         let queryHeader = `SELECT 
@@ -161,18 +193,18 @@ export const getPrintPdfHasilPemeriksaanLab = async (kode_reg:string): Promise<p
 
         WHERE txp.kode_reg = $1
         AND txp.is_active = 1`;
-        const hasilP = await pool.query(queryhasilP,[kode_reg])
+        const hasilP = await pool.query(queryhasilP, [kode_reg])
 
         return {
-            header:resultHeader.rows[0],
-            list_hasil:hasilP.rows
+            header: resultHeader.rows[0],
+            list_hasil: hasilP.rows
         };
-    } catch (error:any) {
+    } catch (error: any) {
         throw error
     }
 }
 
-export const getPrintPdfBayarLab = async (kode_reg:string): Promise<printPdfBayarLab> =>{
+export const getPrintPdfBayarLab = async (kode_reg: string): Promise<printPdfBayarLab> => {
     try {
         // header
         let queryHeader = `SELECT 
@@ -235,10 +267,10 @@ export const getPrintPdfBayarLab = async (kode_reg:string): Promise<printPdfBaya
 
         WHERE txp.kode_reg = $1
         AND txp.is_active = 1`;
-        const hasilP = await pool.query(queryhasilP,[kode_reg])
+        const hasilP = await pool.query(queryhasilP, [kode_reg])
 
         let total_hargax = 0;
-        if(hasilP.rows.length > 0){
+        if (hasilP.rows.length > 0) {
             for (let index = 0; index < hasilP.rows.length; index++) {
                 const e = hasilP.rows[index];
                 total_hargax += Number(e['harga'])
@@ -246,11 +278,11 @@ export const getPrintPdfBayarLab = async (kode_reg:string): Promise<printPdfBaya
         }
 
         return {
-            header:resultHeader.rows[0],
-            list_hasil:hasilP.rows,
+            header: resultHeader.rows[0],
+            list_hasil: hasilP.rows,
             total_harga: total_hargax
         };
-    } catch (error:any) {
+    } catch (error: any) {
         throw error
     }
 }

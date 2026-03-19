@@ -152,3 +152,7 @@ tambahkan sweet alert npm install sweetalert2 sweetalert2-react-content
 buat get data master pemeriksaan
 biat get data detail hasil periksa by kode_reg
 add permintaan pemeriksaan, add hasil periksa, delete periksa
+
+# Step 25 : slicing print form permintaan using pupeteer, tester print form permintaan
+install pupeteer  npm install puppeteer
+slicing print form permintaan

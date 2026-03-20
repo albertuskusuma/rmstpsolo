@@ -79,11 +79,18 @@ export interface HasilPemeriksaan {
     nama_sub_periksa: string;
     hasil: string;
     nilai_normal: string;
+    harga:string
 }
 
 export interface DataPDFHasilLab {
     header: Header;
     list_hasil_pemeriksaan: HasilPemeriksaan[];
+}
+
+export interface DataPDFBayar {
+    header: Header;
+    list_hasil_pemeriksaan: HasilPemeriksaan[];
+    total_harga:string
 }
 
 export const getPrintPdfPermintaanPemeriksaanLab = async (kode_reg: string): Promise<DataPDF> => {
@@ -220,7 +227,7 @@ export const getPrintPdfHasilPemeriksaanLab = async (kode_reg: string): Promise<
     }
 }
 
-export const getPrintPdfBayarLab = async (kode_reg: string): Promise<printPdfBayarLab> => {
+export const getPrintPdfBayarLab = async (kode_reg: string): Promise<DataPDFBayar> => {
     try {
         // header
         let queryHeader = `SELECT 
@@ -239,7 +246,8 @@ export const getPrintPdfBayarLab = async (kode_reg: string): Promise<printPdfBay
             p.no_hp, 
             p.no_kk, 
             p.nama_ibu, 
-            u.nama
+            u.nama AS nama_petugas,
+            p.no_rm
         FROM tx_pemeriksaan as txp
         JOIN pasien as p
             ON txp.id_pasien = p.id_pasien
@@ -295,8 +303,8 @@ export const getPrintPdfBayarLab = async (kode_reg: string): Promise<printPdfBay
 
         return {
             header: resultHeader.rows[0],
-            list_hasil: hasilP.rows,
-            total_harga: total_hargax
+            list_hasil_pemeriksaan: hasilP.rows,
+            total_harga: String(total_hargax)
         };
     } catch (error: any) {
         throw error

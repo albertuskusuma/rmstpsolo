@@ -394,6 +394,50 @@ const AddPemeriksaanPage = () => {
         }
     };
 
+    const handlePrintPdfBayar = async () => {
+        setLoading(true);
+        try {
+            const payload = {
+                // kode_reg: "P1", // ganti sesuai kebutuhan
+                kode_reg: addPermintaanPemeriksaan.kode_reg
+            };
+
+            // Gunakan fetch agar bisa ambil blob PDF
+            const response = await fetch(`${baseUrl}/printpdf/getPrintPdfBayarLab`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+                throw new Error("Gagal mengambil PDF");
+            }
+
+            // Ambil PDF sebagai Blob
+            const blob = await response.blob();
+
+            // Buat URL sementara untuk buka PDF
+            const url = window.URL.createObjectURL(blob);
+
+            // Buka PDF di tab baru
+            window.open(url, "_blank");
+
+            return true; // optional, kalau mau pakai return
+        } catch (error) {
+            console.error("Error fetching PDF", error);
+            showAlert({
+                icon: "error",
+                title: "Gagal",
+                text: "Error fetching PDF",
+            });
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return <MainLayout>
         <div>
             <GowCard
@@ -708,17 +752,18 @@ const AddPemeriksaanPage = () => {
                     <div className='mt-4 p-2 flex gap-2'>
                         <GowButton
                             title={loading ? 'Process...' : 'Tambahkan Permintaan Pemeriksaan'}
-                            isDisabled={false}
+                            isDisabled={loading ? true : false}
                             color="bg-gray-500"
                             onClick={handleAddPermintaanPemeriksaan}
                         />
 
                         <GowButton
                             title={loading ? "Process" : 'Print Form. Permintaan Pemeriksaan'}
-                            isDisabled={false}
+                            isDisabled={loading ? true : false}
                             color="bg-yellow-500"
                             onClick={handlePrintPdfPermintaanPeriksa}
-                            // onClick={handlePrintPdfHasilPeriksa}
+                            // onClick={handlePrintPdfBayar}
+                        // onClick={handlePrintPdfHasilPeriksa}
                         />
                     </div>
                 </>}
@@ -844,8 +889,8 @@ const AddPemeriksaanPage = () => {
 
                             <div className='mt-4 p-2'>
                                 <GowButton
-                                    title='Tambahkan Hasil Periksa'
-                                    isDisabled={false}
+                                    title={loading ? 'Process' : 'Tambahkan Hasil Periksa'}
+                                    isDisabled={loading ? true : false}
                                     color="bg-green-500"
                                     onClick={handleAddInputPemeriksaan}
                                 />
@@ -922,18 +967,16 @@ const AddPemeriksaanPage = () => {
                                 <div className='mt-4 p-2 flex gap-2'>
                                     <GowButton
                                         title={loading ? 'Process' : 'Print Hasil Periksa'}
-                                        isDisabled={false}
+                                        isDisabled={loading ? true : false}
                                         color="bg-teal-500"
                                         onClick={handlePrintPdfHasilPeriksa}
                                     />
 
                                     <GowButton
-                                        title='Print Kwitansi'
-                                        isDisabled={false}
+                                        title={loading ? 'Process' : 'Print Kwitansi'}
+                                        isDisabled={loading ? true : false}
                                         color="bg-orange-500"
-                                        onClick={() => {
-                                            console.log("Print Kwitansi ", addPermintaanPemeriksaan)
-                                        }}
+                                        onClick={handlePrintPdfBayar}
                                     />
                                 </div>
                             </div>

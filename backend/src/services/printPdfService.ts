@@ -2,6 +2,7 @@ import * as printPdfModels from "../models/printPdfModels"
 import puppeteer from "puppeteer";
 import { generateHTML } from "../templates/permintaanLabTemplate";
 import { generateHTMLHasilLab } from "../templates/hasilLabTemplate";
+import { generateHTMLBuktiBayar } from "../templates/buktiBayarTemplate";
 
 export const getPrintPdfPermintaanPemeriksaanLab = async (kode_reg: string) => {
 
@@ -68,5 +69,32 @@ export const getPrintPdfHasilPemeriksaanLab = async (kode_reg: string) => {
 }
 
 export const getPrintPdfBayarLab = async (kode_reg: string) => {
-    return await printPdfModels.getPrintPdfBayarLab(kode_reg)
+    const result = await printPdfModels.getPrintPdfBayarLab(kode_reg)
+
+    // FIX: ambil .data
+    const html = generateHTMLBuktiBayar(result);
+    // console.log(html)
+
+    const browser = await puppeteer.launch({
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
+
+    const page = await browser.newPage();
+
+    await page.setContent(html, { waitUntil: "networkidle0" });
+
+    const pdf = await page.pdf({
+        format: "A4",
+        printBackground: true,
+        margin: {
+            top: "10mm",
+            right: "10mm",
+            bottom: "10mm",
+            left: "10mm",
+        },
+    });
+
+    await browser.close();
+
+    return pdf;
 }

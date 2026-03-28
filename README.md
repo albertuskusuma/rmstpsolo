@@ -160,5 +160,5 @@ slicing print form permintaan
 # Step 26 : slicing print form hasil periksa using pupeteer, tester print form hasil periksa
 slicing print form hasil periksa
 
-# Step 27 : slicing print bukti bayar using pupeteer, tester print bukti bayar
-slicing bukti bayar
+# Step 27 : slicing print bukti bayar using pupeteer, tester print bukti bayar, tester flow permintaan periksa
+slicing bukti bayar, tester print bukti bayar, tester flow permintaan periksa

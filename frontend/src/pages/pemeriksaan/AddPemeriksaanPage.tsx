@@ -61,6 +61,7 @@ const AddPemeriksaanPage = () => {
 
     const [loading, setLoading] = useState(false);
 
+    const [showPrintFormPermintaanPeriksa, setShowPrintFormPermintaanPeriksa] = useState(false);
     const [showFormInputPeriksa, setShowFormInputPeriksa] = useState(false);
 
     const [listBidang, setListBidang] = useState<bidangPeriksaObj[]>([]);
@@ -185,16 +186,23 @@ const AddPemeriksaanPage = () => {
                         berwarna kuning
                     `,
                     });
-                    setShowFormInputPeriksa(true);
+                    setShowPrintFormPermintaanPeriksa(true);
+                    setShowFormInputPeriksa(false);
                     setLoading(false);
+                } else {
+                    showAlert({
+                        icon: "error",
+                        title: "Gagal",
+                        text: ""+res.data.message,
+                    });
                 }
-            } catch (error) {
+            } catch (error: any) {
                 setLoading(false);
                 console.error("Error fetching data", error);
                 showAlert({
                     icon: "error",
                     title: "Gagal",
-                    text: "Error fetching data",
+                    text: "Error fetch data",
                 });
             }
         }
@@ -326,6 +334,8 @@ const AddPemeriksaanPage = () => {
             if (!response.ok) {
                 throw new Error("Gagal mengambil PDF");
             }
+
+            setShowFormInputPeriksa(true);
 
             // Ambil PDF sebagai Blob
             const blob = await response.blob();
@@ -757,14 +767,14 @@ const AddPemeriksaanPage = () => {
                             onClick={handleAddPermintaanPemeriksaan}
                         />
 
-                        <GowButton
-                            title={loading ? "Process" : 'Print Form. Permintaan Pemeriksaan'}
-                            isDisabled={loading ? true : false}
-                            color="bg-yellow-500"
-                            onClick={handlePrintPdfPermintaanPeriksa}
-                            // onClick={handlePrintPdfBayar}
-                        // onClick={handlePrintPdfHasilPeriksa}
-                        />
+                        {showPrintFormPermintaanPeriksa && (
+                            <GowButton
+                                title={loading ? "Process" : 'Print Form. Permintaan Pemeriksaan'}
+                                isDisabled={loading ? true : false}
+                                color="bg-yellow-500"
+                                onClick={handlePrintPdfPermintaanPeriksa}
+                            />
+                        )}
                     </div>
                 </>}
             />

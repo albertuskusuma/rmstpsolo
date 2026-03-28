@@ -20,11 +20,25 @@ export const addTransPemeriksaanHeader = async (req: Request, res: Response) => 
             tanggal_periksa: String(param.tanggal_periksa),
         })
 
-        return res.json({
-            status: "OK",
-            data: data,
-            message: "Permintaan Pemeriksaan Berhasil"
-        })
+        // console.log(data['rows']);
+
+        const rowsx = data['rows'] as [] ?? [];
+
+        if (rowsx.length > 0) {
+            return res.json({
+                status: "OK",
+                data: data,
+                message: "Permintaan Pemeriksaan Berhasil"
+            })
+        } else {
+            return res.json({
+                status: "Err",
+                data: [],
+                message: "Data dengan kode reg "+param.kode_reg+" sudah ada"
+            })
+        }
+
+
     } catch (error) {
         return res.status(500).json({
             status: "Err",
@@ -70,12 +84,12 @@ export const addTransPemeriksaanDetail = async (req: Request, res: Response) => 
     }
 }
 
-export const hapusHasilPemeriksaanDetail = async(req: Request, res: Response) => {
+export const hapusHasilPemeriksaanDetail = async (req: Request, res: Response) => {
     try {
-        if(!req.body || Object.keys(req.body).length == 0){
+        if (!req.body || Object.keys(req.body).length == 0) {
             return res.status(500).json({
-                status:"Err",
-                message:"Silahkan Pilih Hasil Pemeriksaan untuk dihapus"
+                status: "Err",
+                message: "Silahkan Pilih Hasil Pemeriksaan untuk dihapus"
             })
         }
 
@@ -83,53 +97,53 @@ export const hapusHasilPemeriksaanDetail = async(req: Request, res: Response) =>
         const data = await transPemeriksaanService.hapusHasilPemeriksaanDetail(Number(param.id_tx_detail_pemeriksaan))
 
         return res.json({
-            status:"OK",
-            data:data,
-            message:"Berhasil Hapus Hasil Pemeriksaan"
+            status: "OK",
+            data: data,
+            message: "Berhasil Hapus Hasil Pemeriksaan"
         })
 
     } catch (error) {
         return res.status(500).json({
-            status:"Err",
-            message:"Gagal hapus detail"
+            status: "Err",
+            message: "Gagal hapus detail"
         })
     }
 }
 
-export const getMasterPemeriksaan = async(req: Request, res: Response) => {
+export const getMasterPemeriksaan = async (req: Request, res: Response) => {
     try {
         const param = req.body;
         const data = await transPemeriksaanService.getMasterPemeriksaan()
 
         return res.json({
-            status:"OK",
-            data:data,
-            message:"Berhasil get data master pemeriksaan"
+            status: "OK",
+            data: data,
+            message: "Berhasil get data master pemeriksaan"
         })
 
     } catch (error) {
         return res.status(500).json({
-            status:"Err",
-            message:"Gagal hapus detail"
+            status: "Err",
+            message: "Gagal hapus detail"
         })
     }
 }
 
-export const getDetailPemeriksaan = async(req: Request, res: Response) => {
+export const getDetailPemeriksaan = async (req: Request, res: Response) => {
     try {
         const param = req.body;
         const data = await transPemeriksaanService.getDetailPemeriksaan(param.kode_reg as string)
 
         return res.json({
-            status:"OK",
-            data:data,
-            message:"Berhasil get data detail pemeriksaan"
+            status: "OK",
+            data: data,
+            message: "Berhasil get data detail pemeriksaan"
         })
 
     } catch (error) {
         return res.status(500).json({
-            status:"Err",
-            message:"Gagal get data"
+            status: "Err",
+            message: "Gagal get data"
         })
     }
 }

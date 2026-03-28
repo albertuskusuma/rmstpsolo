@@ -4,10 +4,10 @@ type DatePickerProps = {
   id?: string;
   name?: string;
   label?: string;
-  value?: string; // YYYY-MM-DD
+  value?: string; // bisa DD-MM-YYYY atau YYYY-MM-DD
   placeholder?: string;
   isDisabled?: boolean;
-  onChange?: (value: string) => void; // return YYYY-MM-DD
+  onChange?: (value: string) => void; // selalu return YYYY-MM-DD
 };
 
 const GowDatePickerMask = ({
@@ -22,16 +22,38 @@ const GowDatePickerMask = ({
 
   const [inputValue, setInputValue] = useState("");
 
-  // convert YYYY-MM-DD -> DD-MM-YYYY
+  // ✅ normalize semua value jadi ISO
+  const normalizeToISO = (val: string) => {
+    const parts = val.split("-");
+    if (parts.length !== 3) return "";
+
+    // kalau sudah ISO
+    if (parts[0].length === 4) return val;
+
+    // kalau DD-MM-YYYY
+    const [d, m, y] = parts;
+    return `${y}-${m}-${d}`;
+  };
+
+  // ✅ convert ISO -> display (DD-MM-YYYY)
+  const toDisplay = (val: string) => {
+    const parts = val.split("-");
+    if (parts.length !== 3) return "";
+
+    const [y, m, d] = parts;
+    return `${d}-${m}-${y}`;
+  };
+
   useEffect(() => {
-    if (value) {
-      const [y, m, d] = value.split("-");
-      setInputValue(`${d}-${m}-${y}`);
+    if (!value) return;
+
+    const iso = normalizeToISO(value);
+    if (iso) {
+      setInputValue(toDisplay(iso));
     }
   }, [value]);
 
   const applyMask = (val: string) => {
-
     let v = val.replace(/\D/g, "");
 
     if (v.length > 2) v = v.slice(0, 2) + "-" + v.slice(2);
@@ -41,13 +63,9 @@ const GowDatePickerMask = ({
   };
 
   const convertToISO = (val: string) => {
-
-    if (val.length !== 10) return "";
+    if (!/^\d{2}-\d{2}-\d{4}$/.test(val)) return "";
 
     const [d, m, y] = val.split("-");
-
-    if (!d || !m || !y) return "";
-
     return `${y}-${m}-${d}`;
   };
 
@@ -69,17 +87,13 @@ const GowDatePickerMask = ({
           value={inputValue}
           placeholder={placeholder}
           onChange={(e) => {
-
             const masked = applyMask(e.target.value);
-
             setInputValue(masked);
 
             const iso = convertToISO(masked);
-
             if (iso) {
-              onChange?.(iso);
+              onChange?.(iso); // ✅ selalu kirim ISO
             }
-
           }}
           className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600 placeholder:italic disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed disabled:focus:outline-none"
         />

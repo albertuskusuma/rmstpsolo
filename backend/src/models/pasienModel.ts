@@ -37,7 +37,7 @@ export const getPasiens = async (search: string): Promise<PasienModel[]> => {
             jenis_kelamin,
             dokter_pengirim,
             gol_darah,
-            tanggal_lahir,
+            TO_CHAR(tanggal_lahir, 'DD-MM-YYYY') AS tanggal_lahir,
             status_kawin,
             no_hp,
             pekerjaan,

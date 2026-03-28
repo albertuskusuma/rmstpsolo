@@ -38,7 +38,11 @@ export interface bidangPeriksaObj {
 
 export const addTransPemeriksaanHeader = async (addPemeriksaanObj: addPemeriksaanObj) => {
     try {
-        let queryAdd = `INSERT INTO tx_pemeriksaan(
+        let queryCheck = `Select * from tx_pemeriksaan WHERE kode_reg = $1`;
+        const resultCheck = await pool.query(queryCheck, [addPemeriksaanObj.kode_reg]);
+
+        if (resultCheck.rows.length == 0) {
+            let queryAdd = `INSERT INTO tx_pemeriksaan(
             kode_reg, 
             id_pasien, 
             tanggal_periksa, 
@@ -52,12 +56,17 @@ export const addTransPemeriksaanHeader = async (addPemeriksaanObj: addPemeriksaa
             $3 
         ) RETURNING *`;
 
-        const resultAdd = await pool.query(queryAdd, [
-            addPemeriksaanObj.kode_reg,
-            addPemeriksaanObj.id_pasien,
-            addPemeriksaanObj.id_analis_pemeriksa,
-        ])
-        return resultAdd;
+            const resultAdd = await pool.query(queryAdd, [
+                addPemeriksaanObj.kode_reg,
+                addPemeriksaanObj.id_pasien,
+                addPemeriksaanObj.id_analis_pemeriksa,
+            ])
+            return resultAdd;
+        } else {
+            const resultAdd:any = [];
+            return resultAdd;
+        }
+
     } catch (error: any) {
         throw error;
     }

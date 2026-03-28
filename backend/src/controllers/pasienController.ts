@@ -65,3 +65,19 @@ export const getKodeReg= async(req: Request, res: Response) =>{
         });
     }
 }
+
+export const addPasien = async (req: Request, res: Response) => {
+  try {
+    const result = await pasienService.addPasien(req.body);
+
+    return res.json({
+      status: "OK",
+      data: result,
+    });
+  } catch (error: any) {
+    return res.status(error.status || 500).json({
+      status: "Err",
+      message: error.message,
+    });
+  }
+};

@@ -162,3 +162,6 @@ slicing print form hasil periksa
 
 # Step 27 : slicing print bukti bayar using pupeteer, tester print bukti bayar, tester flow permintaan periksa
 slicing bukti bayar, tester print bukti bayar, tester flow permintaan periksa
+
+# Step 28 : tester add pasien
+tester add pasien

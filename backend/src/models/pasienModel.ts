@@ -78,10 +78,10 @@ export const getNoRm = async (): Promise<string> => {
 
         let lastId = 1
         const resultID = await pool.query(querygetLastID);
-        if(resultID.rows.length > 0){
+        if (resultID.rows.length > 0) {
             lastId = Number(resultID.rows[0]['id_pasien']) + 1
         }
-        
+
         let queryDateNow = `SELECT TO_CHAR(DATE(NOW()),'DDMMYYYY') as datenow`;
         const resultDateNow = await pool.query(queryDateNow)
         let dateNow = resultDateNow.rows[0]['datenow']
@@ -106,14 +106,86 @@ export const getKodeReg = async (): Promise<string> => {
         // console.log(queryKodeRegLast)
         let kodeRegLast = 1
         const resultKodeRegLast = await pool.query(queryKodeRegLast)
-        if(resultKodeRegLast.rows.length > 0){
+        if (resultKodeRegLast.rows.length > 0) {
             kodeRegLast = Number(resultKodeRegLast.rows[0]['id_tx_pemeriksaan']) + 1
         }
-       
-        kode_reg += "P"+kodeRegLast
+
+        kode_reg += "P" + kodeRegLast
 
         return kode_reg;
     } catch (error: any) {
         throw error
     }
 }
+
+export const addPasien = async (addPasienObj: PasienModel) => {
+    try {
+        const queryCheck = `
+        SELECT 1 FROM pasien 
+        WHERE no_rm = $1 AND is_active = 1
+        `;
+
+        const resultCheck = await pool.query(queryCheck, [
+            addPasienObj.no_rm,
+        ]);
+
+        // if exists
+        if (resultCheck.rows.length > 0) {
+            const error: any = new Error(
+                `Data dengan no RM : ${addPasienObj.no_rm} sudah ada`
+            );
+            error.status = 409;
+            throw error;
+        }
+
+        //    add
+        const queryAdd = `
+        INSERT INTO pasien (
+            no_rm,
+            nama_pasien,
+            nik,
+            kategori_pasien,
+            jenis_kelamin,
+            dokter_pengirim,
+            gol_darah,
+            tanggal_lahir,
+            status_kawin,
+            no_hp,
+            pekerjaan,
+            no_kk,
+            nama_ayah,
+            nama_ibu,
+            alamat
+        ) VALUES (
+            $1,$2,$3,$4,$5,
+            $6,$7,$8,$9,$10,
+            $11,$12,$13,$14,$15
+        )
+        RETURNING *
+        `;
+
+        const values = [
+            addPasienObj.no_rm,
+            addPasienObj.nama_pasien,
+            addPasienObj.nik,
+            addPasienObj.kategori_pasien,
+            addPasienObj.jenis_kelamin,
+            addPasienObj.dokter_pengirim,
+            addPasienObj.gol_darah,
+            addPasienObj.tanggal_lahir,
+            addPasienObj.status_kawin,
+            addPasienObj.no_hp,
+            addPasienObj.pekerjaan,
+            addPasienObj.no_kk,
+            addPasienObj.nama_ayah,
+            addPasienObj.nama_ibu,
+            addPasienObj.alamat,
+        ];
+
+        const resultAdd = await pool.query(queryAdd, values);
+
+        return resultAdd.rows[0];
+    } catch (error: any) {
+        throw error;
+    }
+};
